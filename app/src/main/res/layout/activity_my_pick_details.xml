@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:contentInsetStart="0dp">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp_5"
+            android:src="@drawable/img_back" />
+
+        <EditText
+            android:id="@+id/edt"
+            android:layout_width="@dimen/dp_230"
+            android:layout_height="@dimen/dp_35"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/btn_circle"
+            android:hint="扫描或输入条码"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/sp_14" />
+
+
+        <TextView
+            android:id="@+id/text_post"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@color/colorWhite" />
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.RecyclerView
+
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
+</LinearLayout>

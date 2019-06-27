@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:contentInsetStart="0dp">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dp_5"
+                android:src="@drawable/img_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="复核"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold" />
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:id="@+id/text_warehouse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_10"
+            android:text="运单号：无"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edt_warehouse_warehouseNum"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/colorWhite"
+            android:hint="输入条码"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/colorBlack"
+            android:textSize="@dimen/sp_14" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
+
+</LinearLayout>

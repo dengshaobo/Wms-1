@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_10">
+
+    <TextView
+        android:id="@+id/text_out_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="预出库编号:" />
+
+    <TextView
+        android:id="@+id/text_out_code_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/text_out_code"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/text_out_code"
+        android:layout_toRightOf="@+id/text_out_code" />
+
+    <TextView
+        android:id="@+id/text_out_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_out_code"
+        android:text="@string/out_id" />
+
+    <TextView
+        android:id="@+id/text_out_id_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/text_out_id"
+        android:layout_toEndOf="@+id/text_out_id"
+        android:layout_toRightOf="@+id/text_out_id" />
+
+
+    <TextView
+        android:id="@+id/text_business"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_out_id"
+        android:text="@string/business" />
+
+    <TextView
+        android:id="@+id/text_business_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/text_business"
+        android:layout_toEndOf="@+id/text_business"
+        android:layout_toRightOf="@+id/text_business" />
+
+    <TextView
+        android:layout_centerVertical="true"
+        android:id="@+id/text_get"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_40"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="领取"
+        android:textStyle="bold" />
+
+</RelativeLayout>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Wms</string>
+    <string name="account">用户名</string>
+    <string name="password">密码</string>
+    <string name="login">登录</string>
+    <string name="warehouse">入库</string>
+    <string name="pick">拣货</string>
+    <string name="location">货位:</string>
+    <string name="barcode">条码:</string>
+    <string name="num">数量:</string>
+    <string name="goods_name">品名:</string>
+    <string name="check_num">复核数量:</string>
+    <string name="out_id">流\u3000水\u3000号:</string>
+    <string name="business">商\u3000\u3000\u3000家:</string>
+</resources>
