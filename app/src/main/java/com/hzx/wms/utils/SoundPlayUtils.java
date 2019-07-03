@@ -34,6 +34,7 @@ public class SoundPlayUtils {
             soundSparse.put(5, mSoundPlayer.load(context.getApplicationContext(), R.raw.error, 1));
             soundSparse.put(6, mSoundPlayer.load(context.getApplicationContext(), R.raw.check, 1));
             soundSparse.put(7, mSoundPlayer.load(context.getApplicationContext(), R.raw.success, 1));
+            soundSparse.put(8, mSoundPlayer.load(context.getApplicationContext(), R.raw.failed, 1));
         }
         return soundPlayUtils;
     }

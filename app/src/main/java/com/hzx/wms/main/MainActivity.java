@@ -1,8 +1,5 @@
 package com.hzx.wms.main;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -26,8 +23,6 @@ import com.hzx.wms.utils.UpdateUtil;
 import com.hzx.wms.warehouse.WarehouseActivity;
 import com.hzx.wms.weight.WeightActivity;
 import com.vondear.rxtool.RxActivityTool;
-import com.vondear.rxtool.RxLogTool;
-import com.vondear.rxtool.RxPermissionsTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 import com.vondear.rxui.view.dialog.RxDialogSureCancel;
@@ -64,6 +59,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        RxActivityTool.addActivity(this);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
@@ -71,7 +67,8 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.card_warehouse, R.id.card_pick, R.id.card_review, R.id.card_check, R.id.card_repeat, R.id.card_weight, R.id.img_setting})
+    @OnClick({R.id.card_warehouse, R.id.card_pick, R.id.card_review, R.id.card_check, R.id.card_repeat,
+            R.id.card_weight, R.id.img_setting, R.id.card_stocktaking, R.id.card_query, R.id.card_replenish})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.card_warehouse:
@@ -83,9 +80,6 @@ public class MainActivity extends BaseActivity {
             case R.id.card_review:
                 RxActivityTool.skipActivity(this, ReviewActivity.class);
                 break;
-            case R.id.card_check:
-                RxToast.warning("功能正在完善。。。", 1000);
-                break;
             case R.id.card_repeat:
                 RxActivityTool.skipActivity(this, RepeatActivity.class);
                 break;
@@ -94,6 +88,18 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.img_setting:
                 RxActivityTool.skipActivity(this, SettingActivity.class);
+                break;
+            case R.id.card_check:
+                RxToast.warning("拦截功能正在完善。。。", 1000);
+                break;
+            case R.id.card_stocktaking:
+                RxToast.warning("盘点功能正在完善。。。", 1000);
+                break;
+            case R.id.card_query:
+                RxToast.warning("查询功能正在完善。。。", 1000);
+                break;
+            case R.id.card_replenish:
+                RxToast.warning("补货功能正在完善。。。", 1000);
                 break;
         }
     }
@@ -131,6 +137,15 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!RxSPTool.getBoolean(this, "isLogin")) {
+            RxActivityTool.skipActivityAndFinish(this, LoginActivity.class);
         }
     }
 }

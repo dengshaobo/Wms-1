@@ -20,6 +20,7 @@ import com.hzx.wms.http.RxUtils;
 import com.hzx.wms.utils.EditSearchAction;
 import com.hzx.wms.utils.GsonUtils;
 import com.hzx.wms.utils.RecycleViewDivider;
+import com.hzx.wms.utils.SoundPlayUtils;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.vondear.rxtool.view.RxToast;
@@ -101,10 +102,15 @@ public class WarehouseScanDetailsActivity extends BaseActivity {
 
     @Override
     public void intentNext(String message) {
-//        if (message.length() < 7) {
-//            RxToast.warning("请扫描或输入正确得条码");
-//            return;
-//        }
+        if (message == null) {
+            SoundPlayUtils.play(8);
+            return;
+        }
+        if (message.length() < 7) {
+            SoundPlayUtils.play(5);
+            RxToast.warning("请扫描或输入正确得条码");
+            return;
+        }
         showNumDialog(message);
     }
 

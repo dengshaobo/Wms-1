@@ -3,6 +3,7 @@ package com.hzx.wms.repeat;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -62,11 +63,13 @@ public class RepeatActivity extends BaseActivity {
         action.searchAction(this, editNum);
         action.setListener(this::intentNext);
 
+        SoundPlayUtils.init(this);
     }
 
     @Override
     public void intentNext(String message) {
         if (message == null) {
+            SoundPlayUtils.play(8);
             return;
         }
         textBarcode.setText(String.format("物流单号：%s", message));
@@ -91,5 +94,13 @@ public class RepeatActivity extends BaseActivity {
                 RxToast.warning("正在完善");
                 break;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            daoSession.deleteAll(RepeatBean.class);
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

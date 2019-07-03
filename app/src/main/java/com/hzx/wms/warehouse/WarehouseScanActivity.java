@@ -18,6 +18,7 @@ import com.hzx.wms.http.HttpUtils;
 import com.hzx.wms.http.RxUtils;
 import com.hzx.wms.utils.EditSearchAction;
 import com.hzx.wms.utils.RecycleViewDivider;
+import com.hzx.wms.utils.SoundPlayUtils;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.vondear.rxtool.RxActivityTool;
@@ -55,6 +56,7 @@ public class WarehouseScanActivity extends BaseActivity {
     }
 
     private void initView() {
+        SoundPlayUtils.init(this);
         //软键盘回车搜索
         EditSearchAction action = new EditSearchAction();
         action.searchAction(this, edtWarehouseWarehouseHw);
@@ -108,6 +110,10 @@ public class WarehouseScanActivity extends BaseActivity {
 
     @Override
     public void intentNext(String message) {
+        if (message == null) {
+            SoundPlayUtils.play(8);
+            return;
+        }
         if (message.length() > 7) {
             RxToast.warning("请扫描或输入正确得货位");
             return;

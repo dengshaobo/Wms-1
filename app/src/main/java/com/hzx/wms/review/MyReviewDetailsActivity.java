@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.hzx.wms.R;
 import com.hzx.wms.app.BaseActivity;
 import com.hzx.wms.bean.CheckBean;
+import com.hzx.wms.bean.TaskListBean;
 import com.hzx.wms.http.Api;
 import com.hzx.wms.http.HttpUtils;
 import com.hzx.wms.http.RxUtils;
@@ -26,6 +27,7 @@ import com.vondear.rxui.view.dialog.RxDialogSure;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -87,13 +89,16 @@ public class MyReviewDetailsActivity extends BaseActivity {
 
         getMainNoDetails(mailNo);
 
-
     }
 
     @Override
     public void intentNext(String message) {
         if (sure != null) {
             sure.dismiss();
+        }
+        if (message == null) {
+            SoundPlayUtils.play(8);
+            return;
         }
         for (CheckBean info : adapter.getData()) {
             list.add(info.getBar_code());
@@ -104,7 +109,9 @@ public class MyReviewDetailsActivity extends BaseActivity {
                 }
                 if (info.getConfirm_num() == info.getNum()) {
                     RxToast.warning(info.getBar_code() + "已复核完成");
-                    checkList.add(info.getBar_code());
+                    if(!checkList.contains(info.getBar_code())){
+                        checkList.add(info.getBar_code());
+                    }
                 }
 
             }
@@ -142,13 +149,13 @@ public class MyReviewDetailsActivity extends BaseActivity {
                 .doOnSubscribe(disposable -> adapter.setEmptyView(loadView))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally(() -> loading.cancel())
-                .observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(listBaseBean -> {
                     if (!listBaseBean.getCode().equals("1000")) {
                         SoundPlayUtils.play(5);
                         RxToast.error(listBaseBean.getMsg(), 5000);
+                        finish();
                         return;
                     }
                     if (listBaseBean.getData().get(0).getPrepare_out_order().getCheck_user_id() != Integer.parseInt(RxSPTool.getString(this, "id"))) {
@@ -158,7 +165,6 @@ public class MyReviewDetailsActivity extends BaseActivity {
                         finish();
                         return;
                     }
-
                     adapter.setNewData(listBaseBean.getData());
                     //设置空view
                     if (adapter.getData().size() == 0) {

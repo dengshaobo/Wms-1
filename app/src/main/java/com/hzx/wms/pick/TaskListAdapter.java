@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hzx.wms.R;
 import com.hzx.wms.bean.TaskListBean;
+import com.vondear.rxtool.RxLogTool;
 
 import java.util.List;
 

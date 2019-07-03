@@ -11,6 +11,7 @@ import com.hzx.wms.bean.TaskListBean;
 import com.hzx.wms.http.Api;
 import com.hzx.wms.http.HttpUtils;
 import com.hzx.wms.http.RxUtils;
+import com.hzx.wms.review.CheckOutAdapter;
 import com.hzx.wms.utils.RecycleViewDivider;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
@@ -40,7 +41,7 @@ public class MyPickActivity extends BaseActivity {
     ImageView imgBack;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    TaskListAdapter adapter;
+    CheckOutAdapter adapter;
     private int mNextRequestPage = 1;
     private static final int LIMIT = 10;
 
@@ -59,9 +60,11 @@ public class MyPickActivity extends BaseActivity {
         emptyView = emptyView(recyclerView);
         LinearLayoutManager manager = new LinearLayoutManager(MyPickActivity.this);
         recyclerView.setLayoutManager(manager);
-        adapter = new TaskListAdapter(R.layout.activity_pick_item, null);
+        adapter = new CheckOutAdapter(R.layout.activity_pick_item, null);
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(adapter);
+
+
         adapter.setPreLoadNumber(8);
         adapter.setEnableLoadMore(true);
         errorView.setOnClickListener(view -> getPickTask("1", "100"));

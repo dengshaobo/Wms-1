@@ -18,6 +18,7 @@ import com.hzx.wms.http.HttpUtils;
 import com.hzx.wms.http.RxUtils;
 import com.hzx.wms.utils.EditSearchAction;
 import com.hzx.wms.utils.RecycleViewDivider;
+import com.hzx.wms.utils.SoundPlayUtils;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.vondear.rxtool.view.RxToast;
@@ -58,12 +59,15 @@ public class MyPickDetailsActivity extends BaseActivity {
     @Bind(R.id.text_post)
     TextView textPost;
 
+    RxDialogEditSureCancel dialogEditSureCancel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_pick_details);
         ButterKnife.bind(this);
         initView();
+        SoundPlayUtils.init(this);
     }
 
     private void initView() {
@@ -80,6 +84,7 @@ public class MyPickDetailsActivity extends BaseActivity {
         adapter.setEnableLoadMore(true);
         recyclerView.setAdapter(adapter);
 
+
         adapter.setOnItemClickListener((adapter, view, position) -> {
             TaskListBean.NumListBean list = (TaskListBean.NumListBean) adapter.getData().get(position);
             showNumDialog(list, position);
@@ -89,7 +94,7 @@ public class MyPickDetailsActivity extends BaseActivity {
 
 
     private void showNumDialog(TaskListBean.NumListBean list, int position) {
-        RxDialogEditSureCancel dialogEditSureCancel = new RxDialogEditSureCancel(this);
+        dialogEditSureCancel = new RxDialogEditSureCancel(this);
         dialogEditSureCancel.getTitleView().setText(String.format("输入%s已捡数量", list.getBar_code()));
         dialogEditSureCancel.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
         dialogEditSureCancel.getSureView().setOnClickListener(v -> {
@@ -108,6 +113,14 @@ public class MyPickDetailsActivity extends BaseActivity {
 
     @Override
     public void intentNext(String message) {
+        if (message == null) {
+            SoundPlayUtils.play(8);
+            return;
+        }
+
+        if (dialogEditSureCancel != null) {
+            dialogEditSureCancel.dismiss();
+        }
         for (TaskListBean.NumListBean info : adapter.getData()) {
             if (message.equals(info.getBar_code())) {
                 showNumDialog(info, adapter.getData().indexOf(info));

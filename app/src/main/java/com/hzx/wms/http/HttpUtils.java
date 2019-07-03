@@ -1,9 +1,10 @@
 package com.hzx.wms.http;
 
 
-
 import com.hzx.wms.BuildConfig;
+import com.hzx.wms.app.MyApplication;
 import com.vondear.rxtool.RxLogTool;
+import com.vondear.rxtool.RxSPTool;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,8 +24,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HttpUtils {
 
-   // private static final String BASE_URL = " http://139.224.57.189:8017";
-    private static final String BASE_URL = "http://192.168.1.6:8002/api/";
+    // private static final String BASE_URL = " http://139.224.57.189:8017";
+    //private String BASE_URL = "http://192.168.1.6:8002/api/";
+    private String BASE_URL = "";
     private Retrofit retrofit;
 
     private static class SingletonHolder {
@@ -32,6 +34,7 @@ public class HttpUtils {
     }
 
     private HttpUtils() {
+        BASE_URL = RxSPTool.getString(MyApplication.getContext(), "BaseUrl");
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         builder.readTimeout(10, TimeUnit.SECONDS);
         builder.connectTimeout(10, TimeUnit.SECONDS);
@@ -43,6 +46,7 @@ public class HttpUtils {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(interceptor);
         }
+
         retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
                 .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())

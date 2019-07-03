@@ -1,6 +1,7 @@
 package com.hzx.wms.review;
 
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -25,6 +26,7 @@ public class CheckOutAdapter extends BaseQuickAdapter<TaskListBean, BaseViewHold
         helper.setText(R.id.text_out_code_value, item.getOut_code());
         helper.setText(R.id.text_out_id_value, item.getOut_id());
         helper.setText(R.id.text_business_value, item.getBusiness().getName());
-        helper.addOnClickListener(R.id.text_get);
+        //helper.addOnClickListener(R.id.text_get);
+        helper.getView(R.id.text_get).setVisibility(View.GONE);
     }
 }

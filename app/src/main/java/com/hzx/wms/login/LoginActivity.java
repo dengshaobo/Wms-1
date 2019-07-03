@@ -1,7 +1,6 @@
 package com.hzx.wms.login;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -15,7 +14,6 @@ import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.vondear.rxtool.RxActivityTool;
 import com.vondear.rxtool.RxBarTool;
-import com.vondear.rxtool.RxLogTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 
@@ -39,7 +37,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        RxBarTool.setTransparentStatusBar(this);
+      //  RxBarTool.setTransparentStatusBar(this);
     }
 
     @OnClick(R.id.btn_login)
@@ -79,4 +77,5 @@ public class LoginActivity extends BaseActivity {
                 }, throwable -> {
                 });
     }
+
 }

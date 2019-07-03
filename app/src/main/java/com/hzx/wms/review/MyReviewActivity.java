@@ -36,7 +36,7 @@ public class MyReviewActivity extends BaseActivity {
     private int mNextRequestPage = 1;
     private static final int LIMIT = 10;
     private static final String NUM = "1";
-    TaskListAdapter adapter;
+    CheckOutAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class MyReviewActivity extends BaseActivity {
         //初始化列表
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
-        adapter = new TaskListAdapter(R.layout.activity_my_pick, null);
+        adapter = new CheckOutAdapter(R.layout.activity_pick_item, null);
         recyclerView.setAdapter(adapter);
         adapter.setPreLoadNumber(8);
         adapter.setEnableLoadMore(true);
@@ -64,7 +64,8 @@ public class MyReviewActivity extends BaseActivity {
             TaskListBean taskListBean = adapter.getData().get(position);
             Bundle bundle = new Bundle();
             bundle.putString("id", String.valueOf(taskListBean.getId()));
-            RxActivityTool.skipActivity(MyReviewActivity.this, MyReviewDetailsActivity.class, bundle);
+
+            RxActivityTool.skipActivity(MyReviewActivity.this, MyReviewMailNoActivity.class, bundle);
         });
 
         errorView.setOnClickListener(v -> getData("1", "100"));

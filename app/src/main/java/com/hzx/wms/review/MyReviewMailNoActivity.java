@@ -39,13 +39,17 @@ public class MyReviewMailNoActivity extends BaseActivity {
 
     @Override
     public void intentNext(String message) {
-        if(message.length()<9){
-            RxToast.warning("扫描正确的单号",4000);
+        if (message == null) {
+            SoundPlayUtils.play(8);
+            return;
+        }
+        if (message.length() < 9) {
+            RxToast.warning("扫描正确的单号", 4000);
             SoundPlayUtils.play(5);
             return;
         }
         Bundle bundle = new Bundle();
-        bundle.putString("mailNo", message.trim().toString());
+        bundle.putString("mailNo", message.trim());
         RxActivityTool.skipActivity(this, MyReviewDetailsActivity.class, bundle);
     }
 

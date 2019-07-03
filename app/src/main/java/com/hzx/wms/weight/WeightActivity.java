@@ -218,6 +218,10 @@ public class WeightActivity extends BaseActivity {
 
     @Override
     public void intentNext(String message) {
+        if(message==null){
+            SoundPlayUtils.play(8);
+            return;
+        }
         txtRepeatBarcode.setText(message);
         putWeight(message);
     }

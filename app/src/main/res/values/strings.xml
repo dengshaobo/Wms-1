@@ -12,4 +12,5 @@
     <string name="check_num">复核数量:</string>
     <string name="out_id">流\u3000水\u3000号:</string>
     <string name="business">商\u3000\u3000\u3000家:</string>
+    <string name="out_code">预出库编号:</string>
 </resources>

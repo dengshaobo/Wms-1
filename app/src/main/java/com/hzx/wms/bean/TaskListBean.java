@@ -15,29 +15,29 @@ public class TaskListBean implements Serializable {
 
 
     /**
-     * id : 1
-     * out_code : 1559785423626
-     * out_id : 57222701241559782800
+     * id : 2
+     * out_code : 1561960270599
+     * out_id : 1561957200
      * user_id : 1
      * scan_user_id : 1
-     * check_user_id : null
+     * check_user_id : 1
      * print_times : null
-     * order_status : null
-     * pick_status : null
-     * business_id : 1
+     * order_status : 2
+     * business_id : 31
      * level : 2
-     * status : 3
+     * status : 4
      * deleted_at : null
-     * created_at : 2019-06-06 09:43:43
-     * updated_at : 2019-06-06 11:48:42
+     * created_at : 2019-07-01 13:51:10
+     * updated_at : 2019-07-01 14:34:48
      * user : {"id":1,"name":"管理员"}
-     * business : {"id":1,"name":"测试商家1"}
+     * business : {"id":31,"name":"BFP-君达"}
      * top_storage : null
      * storage : null
      * scan_user : {"id":1,"name":"管理员"}
-     * order_list : ["D1641645161SPLIT560","D1641645161","D1641645162"]
-     * bar_code_list : ["00001","00002","00003","00004","00005","00006","00007","00008","00009","00010","00011","00012","00013","00014","00015","00016","00001","00001"]
-     * num_list : [{"bar_code":"00001","num":1,"pick_num":null,"ware_location":"AA1"},{"bar_code":"00002","num":11,"pick_num":null,"ware_location":"AA2"},{"bar_code":"00003","num":12,"pick_num":null,"ware_location":"测试货位3"},{"bar_code":"00004","num":13,"pick_num":null,"ware_location":"测试货位4"},{"bar_code":"00005","num":14,"pick_num":null,"ware_location":"测试货位5"},{"bar_code":"00006","num":15,"pick_num":null,"ware_location":"测试货位6"},{"bar_code":"00007","num":16,"pick_num":null,"ware_location":"测试货位7"},{"bar_code":"00008","num":17,"pick_num":null,"ware_location":"测试货位8"},{"bar_code":"00009","num":18,"pick_num":null,"ware_location":"测试货位9"},{"bar_code":"00010","num":19,"pick_num":null,"ware_location":"测试货位10"},{"bar_code":"00011","num":20,"pick_num":null,"ware_location":"测试货位11"},{"bar_code":"00012","num":21,"pick_num":null,"ware_location":"测试货位12"},{"bar_code":"00013","num":22,"pick_num":null,"ware_location":"测试货位13"},{"bar_code":"00014","num":23,"pick_num":null,"ware_location":"测试货位14"},{"bar_code":"00015","num":24,"pick_num":null,"ware_location":"测试货位15"},{"bar_code":"00016","num":25,"pick_num":null,"ware_location":"测试货位16"},{"bar_code":"00001","num":1,"pick_num":null,"ware_location":"AA1"},{"bar_code":"00001","num":8,"pick_num":null,"ware_location":"AA1"}]
+     * check_user : {"id":1,"name":"管理员"}
+     * order_list : ["D1641645165623"]
+     * bar_code_list : [4901301254283]
+     * num_list : [{"bar_code":"4901301254283","num":10,"pick_num":10,"ware_location":"AA001"}]
      */
 
     private int id;
@@ -48,7 +48,6 @@ public class TaskListBean implements Serializable {
     private int check_user_id;
     private Object print_times;
     private int order_status;
-    private Object pick_status;
     private int business_id;
     private int level;
     private int status;
@@ -60,8 +59,9 @@ public class TaskListBean implements Serializable {
     private Object top_storage;
     private Object storage;
     private ScanUserBean scan_user;
+    private CheckUserBean check_user;
     private List<String> order_list;
-    private List<String> bar_code_list;
+    private List<Long> bar_code_list;
     private List<NumListBean> num_list;
 
     public int getId() {
@@ -126,14 +126,6 @@ public class TaskListBean implements Serializable {
 
     public void setOrder_status(int order_status) {
         this.order_status = order_status;
-    }
-
-    public Object getPick_status() {
-        return pick_status;
-    }
-
-    public void setPick_status(Object pick_status) {
-        this.pick_status = pick_status;
     }
 
     public int getBusiness_id() {
@@ -224,6 +216,14 @@ public class TaskListBean implements Serializable {
         this.scan_user = scan_user;
     }
 
+    public CheckUserBean getCheck_user() {
+        return check_user;
+    }
+
+    public void setCheck_user(CheckUserBean check_user) {
+        this.check_user = check_user;
+    }
+
     public List<String> getOrder_list() {
         return order_list;
     }
@@ -232,11 +232,11 @@ public class TaskListBean implements Serializable {
         this.order_list = order_list;
     }
 
-    public List<String> getBar_code_list() {
+    public List<Long> getBar_code_list() {
         return bar_code_list;
     }
 
-    public void setBar_code_list(List<String> bar_code_list) {
+    public void setBar_code_list(List<Long> bar_code_list) {
         this.bar_code_list = bar_code_list;
     }
 
@@ -248,7 +248,7 @@ public class TaskListBean implements Serializable {
         this.num_list = num_list;
     }
 
-    public static class UserBean implements Serializable {
+    public static class UserBean implements Serializable{
         /**
          * id : 1
          * name : 管理员
@@ -274,10 +274,10 @@ public class TaskListBean implements Serializable {
         }
     }
 
-    public static class BusinessBean implements Serializable {
+    public static class BusinessBean implements Serializable{
         /**
-         * id : 1
-         * name : 测试商家1
+         * id : 31
+         * name : BFP-君达
          */
 
         private int id;
@@ -300,7 +300,7 @@ public class TaskListBean implements Serializable {
         }
     }
 
-    public static class ScanUserBean implements Serializable {
+    public static class ScanUserBean implements Serializable{
         /**
          * id : 1
          * name : 管理员
@@ -326,12 +326,38 @@ public class TaskListBean implements Serializable {
         }
     }
 
-    public static class NumListBean implements Serializable {
+    public static class CheckUserBean implements Serializable{
         /**
-         * bar_code : 00001
-         * num : 1
-         * pick_num : null
-         * ware_location : AA1
+         * id : 1
+         * name : 管理员
+         */
+
+        private int id;
+        private String name;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    public static class NumListBean implements Serializable{
+        /**
+         * bar_code : 4901301254283
+         * num : 10
+         * pick_num : 10
+         * ware_location : AA001
          */
 
         private String bar_code;
@@ -369,16 +395,6 @@ public class TaskListBean implements Serializable {
 
         public void setWare_location(String ware_location) {
             this.ware_location = ware_location;
-        }
-
-        @Override
-        public String toString() {
-            return "NumListBean{" +
-                    "bar_code='" + bar_code + '\'' +
-                    ", num=" + num +
-                    ", pick_num=" + pick_num +
-                    ", ware_location='" + ware_location + '\'' +
-                    '}';
         }
     }
 }

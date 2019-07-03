@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.hzx.wms.setting.SettingActivity">
 
     <android.support.v7.widget.Toolbar
@@ -35,11 +36,25 @@
         android:id="@+id/text_update"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
+        android:background="@drawable/touch_bg"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dp_10"
+        android:text="更新" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorBlack"
+        app:layout_constraintTop_toBottomOf="@+id/text_update" />
+
+    <TextView
+        android:id="@+id/text_url"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
         android:background="@drawable/selector_bg"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/dp_10"
-        android:text="更新"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        android:text="服务器地址:" />
 
     <View
         android:layout_width="match_parent"
@@ -51,10 +66,9 @@
         android:id="@+id/text_login_out"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
-        android:background="@drawable/selector_bg"
+        android:background="@drawable/touch_bg"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/dp_10"
-        android:text="退出登录"
-        app:layout_constraintTop_toBottomOf="@+id/text_update" />
+        android:text="退出登录" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -35,7 +35,7 @@
             android:layout_gravity="right"
             android:gravity="center"
             android:text="我的"
-            android:textColor="@color/colorWhite"
+            android:textColor="@drawable/text_selector"
             android:textSize="@dimen/sp_15" />
     </android.support.v7.widget.Toolbar>
 

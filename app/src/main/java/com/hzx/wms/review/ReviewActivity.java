@@ -15,6 +15,7 @@ import com.hzx.wms.bean.TaskListBean;
 import com.hzx.wms.http.Api;
 import com.hzx.wms.http.HttpUtils;
 import com.hzx.wms.http.RxUtils;
+import com.hzx.wms.pick.TaskListAdapter;
 import com.hzx.wms.utils.GsonUtils;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
@@ -41,7 +42,7 @@ public class ReviewActivity extends BaseActivity {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    CheckOutAdapter adapter;
+    TaskListAdapter adapter;
     @Bind(R.id.img_back)
     ImageView imgBack;
     @Bind(R.id.text_mine)
@@ -69,11 +70,12 @@ public class ReviewActivity extends BaseActivity {
         //初始化列表
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
-        adapter = new CheckOutAdapter(R.layout.activity_pick_item, null);
+        adapter = new TaskListAdapter(R.layout.activity_pick_item, null);
         recyclerView.setAdapter(adapter);
         adapter.setPreLoadNumber(8);
         adapter.setEnableLoadMore(true);
 
+        errorView.setOnClickListener(view -> getData("1", "100"));
         //item子控件点击事件
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             TaskListBean taskListBean = (TaskListBean) adapter.getData().get(position);
@@ -90,8 +92,6 @@ public class ReviewActivity extends BaseActivity {
             sureCancel.getCancelView().setOnClickListener(v -> sureCancel.cancel());
             sureCancel.show();
         });
-
-
     }
 
     @Override
