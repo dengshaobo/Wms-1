@@ -1,12 +1,12 @@
 package com.hzx.wms.review;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.hzx.wms.R;
 import com.hzx.wms.app.BaseActivity;
+import com.hzx.wms.app.Constants;
 import com.hzx.wms.utils.EditSearchAction;
 import com.hzx.wms.utils.SoundPlayUtils;
 import com.vondear.rxtool.RxActivityTool;
@@ -16,6 +16,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * @author  qinl
+ * @date  2019/7/3
+*/
 public class MyReviewMailNoActivity extends BaseActivity {
 
     @Bind(R.id.img_back)
@@ -43,7 +47,7 @@ public class MyReviewMailNoActivity extends BaseActivity {
             SoundPlayUtils.play(8);
             return;
         }
-        if (message.length() < 9) {
+        if (message.length() < Constants.WAREHOUSE_LENGTH) {
             RxToast.warning("扫描正确的单号", 4000);
             SoundPlayUtils.play(5);
             return;

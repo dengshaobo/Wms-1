@@ -2,6 +2,8 @@ package com.hzx.wms.main;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -14,8 +16,10 @@ import android.widget.ImageView;
 
 import com.hzx.wms.R;
 import com.hzx.wms.app.BaseActivity;
+import com.hzx.wms.check.CheckActivity;
 import com.hzx.wms.login.LoginActivity;
 import com.hzx.wms.pick.PickActivity;
+import com.hzx.wms.query.QueryActivity;
 import com.hzx.wms.repeat.RepeatActivity;
 import com.hzx.wms.review.ReviewActivity;
 import com.hzx.wms.setting.SettingActivity;
@@ -31,6 +35,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+
+/**
+ * @author qinl
+ * @date 2019/7/3
+ */
 public class MainActivity extends BaseActivity {
 
     @Bind(R.id.card_warehouse)
@@ -93,14 +102,15 @@ public class MainActivity extends BaseActivity {
                 RxToast.warning("拦截功能正在完善。。。", 1000);
                 break;
             case R.id.card_stocktaking:
-                RxToast.warning("盘点功能正在完善。。。", 1000);
+                RxActivityTool.skipActivity(this, CheckActivity.class);
                 break;
             case R.id.card_query:
-                RxToast.warning("查询功能正在完善。。。", 1000);
+                RxActivityTool.skipActivity(this, QueryActivity.class);
                 break;
             case R.id.card_replenish:
                 RxToast.warning("补货功能正在完善。。。", 1000);
                 break;
+            default:
         }
     }
 

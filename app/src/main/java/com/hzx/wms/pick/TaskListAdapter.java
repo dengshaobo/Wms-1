@@ -6,7 +6,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hzx.wms.R;
 import com.hzx.wms.bean.TaskListBean;
-import com.vondear.rxtool.RxLogTool;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class TaskListAdapter extends BaseQuickAdapter<TaskListBean, BaseViewHold
     protected void convert(BaseViewHolder helper, TaskListBean item) {
         helper.setText(R.id.text_out_code_value, item.getOut_code());
         helper.setText(R.id.text_out_id_value, item.getOut_id());
-        helper.setText(R.id.text_business_value, item.getBusiness().getName());
+        helper.setText(R.id.text_business_value, item.getBusiness() == null ? "无" : item.getBusiness().getName());
         helper.addOnClickListener(R.id.text_get);
     }
 }

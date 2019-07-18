@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.hzx.wms.R;
 import com.hzx.wms.app.BaseActivity;
-import com.hzx.wms.bean.CheckBean;
-import com.hzx.wms.bean.TaskListBean;
+import com.hzx.wms.app.Constants;
+import com.hzx.wms.bean.ReviewBean;
 import com.hzx.wms.http.Api;
 import com.hzx.wms.http.HttpUtils;
 import com.hzx.wms.http.RxUtils;
@@ -19,7 +19,6 @@ import com.hzx.wms.utils.RecycleViewDivider;
 import com.hzx.wms.utils.SoundPlayUtils;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
-import com.vondear.rxtool.RxLogTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 import com.vondear.rxui.view.dialog.RxDialogSure;
@@ -27,7 +26,6 @@ import com.vondear.rxui.view.dialog.RxDialogSure;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,6 +33,10 @@ import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * @author qinl
+ * @date 2019/7/3
+ */
 public class MyReviewDetailsActivity extends BaseActivity {
 
     @Bind(R.id.img_back)
@@ -47,7 +49,7 @@ public class MyReviewDetailsActivity extends BaseActivity {
     RecyclerView recyclerView;
     private static final String NUM = "1";
 
-    MineCheckTaskDetailsAdapter adapter;
+    MineReviewTaskDetailsAdapter adapter;
     String mailNo;
     List<String> list = new ArrayList<>();
     List<String> checkList = new ArrayList<>();
@@ -80,15 +82,12 @@ public class MyReviewDetailsActivity extends BaseActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.VERTICAL));
-        adapter = new MineCheckTaskDetailsAdapter(R.layout.activity_my_check_details_item, null);
+        adapter = new MineReviewTaskDetailsAdapter(R.layout.activity_my_check_details_item, null);
         recyclerView.setAdapter(adapter);
         adapter.setPreLoadNumber(8);
         adapter.setEnableLoadMore(true);
-
         errorView.setOnClickListener(v -> getMainNoDetails(mailNo));
-
         getMainNoDetails(mailNo);
-
     }
 
     @Override
@@ -100,7 +99,12 @@ public class MyReviewDetailsActivity extends BaseActivity {
             SoundPlayUtils.play(8);
             return;
         }
-        for (CheckBean info : adapter.getData()) {
+        if (message.length() < Constants.WAREHOUSE_LENGTH) {
+            RxToast.warning("扫描正确的条码", 4000);
+            SoundPlayUtils.play(5);
+            return;
+        }
+        for (ReviewBean info : adapter.getData()) {
             list.add(info.getBar_code());
             if (message.equals(info.getBar_code())) {
                 if (info.getConfirm_num() < info.getNum()) {
@@ -109,7 +113,7 @@ public class MyReviewDetailsActivity extends BaseActivity {
                 }
                 if (info.getConfirm_num() == info.getNum()) {
                     RxToast.warning(info.getBar_code() + "已复核完成");
-                    if(!checkList.contains(info.getBar_code())){
+                    if (!checkList.contains(info.getBar_code())) {
                         checkList.add(info.getBar_code());
                     }
                 }
@@ -133,9 +137,7 @@ public class MyReviewDetailsActivity extends BaseActivity {
         if (checkList.size() == adapter.getData().size()) {
             check(mailNo);
         }
-
     }
-
 
     private void getMainNoDetails(String msg) {
         HashMap<String, String> params = new HashMap<>(3);
@@ -152,7 +154,7 @@ public class MyReviewDetailsActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(listBaseBean -> {
-                    if (!listBaseBean.getCode().equals("1000")) {
+                    if (!Constants.CODE_SUCCESS.equals(listBaseBean.getCode())) {
                         SoundPlayUtils.play(5);
                         RxToast.error(listBaseBean.getMsg(), 5000);
                         finish();
@@ -170,10 +172,7 @@ public class MyReviewDetailsActivity extends BaseActivity {
                     if (adapter.getData().size() == 0) {
                         adapter.setEmptyView(emptyView);
                     }
-                }, throwable -> {
-                    RxLogTool.e("xxxxxx", throwable.toString());
-                    finish();
-                });
+                }, throwable -> finish());
     }
 
     private void check(String mailNo) {
@@ -191,8 +190,7 @@ public class MyReviewDetailsActivity extends BaseActivity {
                 .subscribe(baseBean -> {
                     SoundPlayUtils.play(7);
                     finish();
-                }, throwable -> {
-                });
+                }, throwable -> {});
     }
 
     @OnClick(R.id.img_back)

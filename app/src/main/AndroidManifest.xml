@@ -23,9 +23,9 @@
             </intent-filter>
         </activity>
 
-        <!--<activity-->
-            <!--android:name=".main.MainActivity"-->
-            <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar" />-->
+        <!-- <activity -->
+        <!-- android:name=".main.MainActivity" -->
+        <!-- android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> -->
         <activity
             android:name=".login.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -70,6 +70,15 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".repeat.RepeatActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".query.QueryActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".check.CheckActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".check.CheckDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 

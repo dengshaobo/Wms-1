@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.hzx.wms.R;
 import com.hzx.wms.app.BaseActivity;
+import com.hzx.wms.app.Constants;
 import com.hzx.wms.bean.TaskListBean;
 import com.hzx.wms.http.Api;
 import com.hzx.wms.http.HttpUtils;
@@ -84,7 +85,6 @@ public class MyPickDetailsActivity extends BaseActivity {
         adapter.setEnableLoadMore(true);
         recyclerView.setAdapter(adapter);
 
-
         adapter.setOnItemClickListener((adapter, view, position) -> {
             TaskListBean.NumListBean list = (TaskListBean.NumListBean) adapter.getData().get(position);
             showNumDialog(list, position);
@@ -117,7 +117,10 @@ public class MyPickDetailsActivity extends BaseActivity {
             SoundPlayUtils.play(8);
             return;
         }
-
+        if (message.length() < Constants.WAREHOUSE_LENGTH) {
+            RxToast.warning("请扫描或输入正确的条码");
+            return;
+        }
         if (dialogEditSureCancel != null) {
             dialogEditSureCancel.dismiss();
         }
@@ -153,9 +156,7 @@ public class MyPickDetailsActivity extends BaseActivity {
                     List<TaskListBean.NumListBean> listBeans = new ArrayList<>();
                     Collection<TaskListBean.NumListBean> connection = map.values();
                     listBeans.addAll(connection);
-
                     emitter.onNext(listBeans);
-
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -166,7 +167,7 @@ public class MyPickDetailsActivity extends BaseActivity {
         StringBuilder builder = new StringBuilder();
         for (TaskListBean.NumListBean info : adapter.getData()) {
             if (info.getNum() != info.getPick_num()) {
-                builder.append(info.getBar_code() + ",");
+                builder.append(info.getBar_code()).append(",");
             }
         }
         if (builder.length() > 0) {
@@ -202,6 +203,7 @@ public class MyPickDetailsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.text_post:
+                vib();
                 post();
                 break;
             default:

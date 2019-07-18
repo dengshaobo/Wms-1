@@ -11,7 +11,7 @@ import com.hzx.wms.bean.TaskListBean;
 import com.hzx.wms.http.Api;
 import com.hzx.wms.http.HttpUtils;
 import com.hzx.wms.http.RxUtils;
-import com.hzx.wms.pick.TaskListAdapter;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.vondear.rxtool.RxActivityTool;
@@ -28,11 +28,17 @@ import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * @author qinl
+ * @date 2019/7/3
+ */
 public class MyReviewActivity extends BaseActivity {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.img_back)
     ImageView imgBack;
+    @Bind(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
     private int mNextRequestPage = 1;
     private static final int LIMIT = 10;
     private static final String NUM = "1";
@@ -45,7 +51,6 @@ public class MyReviewActivity extends BaseActivity {
         ButterKnife.bind(this);
         initData();
     }
-
 
     private void initData() {
         //初始化状态view
@@ -67,8 +72,9 @@ public class MyReviewActivity extends BaseActivity {
 
             RxActivityTool.skipActivity(MyReviewActivity.this, MyReviewMailNoActivity.class, bundle);
         });
-
         errorView.setOnClickListener(v -> getData("1", "100"));
+        refreshLayout.setOnRefreshListener(refreshLayout1 -> getData("1", "100"));
+        getData("1", "100");
     }
 
     private void getData(String page, String limit) {
@@ -101,25 +107,19 @@ public class MyReviewActivity extends BaseActivity {
                 .doFinally(() -> loading.cancel())
                 .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(taskListBeans -> {
+                    refreshLayout.finishRefresh();
                     adapter.setNewData(taskListBeans);
                     //设置空view
                     if (adapter.getData().size() == 0) {
                         adapter.setEmptyView(emptyView);
                     }
-                }, throwable -> adapter.setEmptyView(errorView));
+                }, throwable -> {
+                    refreshLayout.finishRefresh(false);
+                    adapter.setEmptyView(errorView);
+                });
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getData("1", "100");
-    }
-
-    @Override
-    public void intentNext(String message) {
-
-    }
 
 
     @OnClick(R.id.img_back)

@@ -1,6 +1,7 @@
 package com.hzx.wms.warehouse;
 
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -13,6 +14,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.hzx.wms.R;
 import com.hzx.wms.app.BaseActivity;
+import com.hzx.wms.app.Constants;
 import com.hzx.wms.bean.RuKuDetailsBean;
 import com.hzx.wms.http.Api;
 import com.hzx.wms.http.HttpUtils;
@@ -37,6 +39,10 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+/**
+ * @author qinl
+ * @date 2019/7/3
+ */
 public class WarehouseScanDetailsActivity extends BaseActivity {
 
     @Bind(R.id.img_back)
@@ -49,9 +55,10 @@ public class WarehouseScanDetailsActivity extends BaseActivity {
     EditText edtWarehouseWarehouseNum;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    WarehouseScanDetailsAdapter adapter;
-    String location;
-    int id;
+    private WarehouseScanDetailsAdapter adapter;
+    private String location;
+    private int id;
+    private RxDialogEditSureCancel numDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +69,13 @@ public class WarehouseScanDetailsActivity extends BaseActivity {
     }
 
     private void initView() {
-        location = getIntent().getStringExtra("location");
-        textWarehouse.setText(String.format("货位：%s", location));
-        id = getIntent().getIntExtra("id", 0);
-        //软键盘回车搜索
         EditSearchAction action = new EditSearchAction();
         action.searchAction(this, edtWarehouseWarehouseNum);
         action.setListener(this::intentNext);
+
+        location = getIntent().getStringExtra("location");
+        textWarehouse.setText(String.format("货位：%s", location));
+        id = getIntent().getIntExtra("id", 0);
 
         //初始化状态view
         loadView = loadView(recyclerView);
@@ -81,7 +88,6 @@ public class WarehouseScanDetailsActivity extends BaseActivity {
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(adapter);
 
-
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             RuKuDetailsBean bean = (RuKuDetailsBean) adapter.getData().get(position);
             if (view.getId() == R.id.img_edit) {
@@ -92,9 +98,7 @@ public class WarehouseScanDetailsActivity extends BaseActivity {
                     adapter.remove(position);
                     dialogSureCancel.dismiss();
                 });
-                dialogSureCancel.getCancelView().setOnClickListener(view12 -> {
-                    dialogSureCancel.dismiss();
-                });
+                dialogSureCancel.getCancelView().setOnClickListener(view12 -> dialogSureCancel.dismiss());
                 dialogSureCancel.show();
             }
         });
@@ -102,20 +106,23 @@ public class WarehouseScanDetailsActivity extends BaseActivity {
 
     @Override
     public void intentNext(String message) {
+        if (numDialog != null) {
+            numDialog.dismiss();
+        }
         if (message == null) {
             SoundPlayUtils.play(8);
             return;
         }
-        if (message.length() < 7) {
+        if (message.length() < Constants.WAREHOUSE_LENGTH) {
             SoundPlayUtils.play(5);
-            RxToast.warning("请扫描或输入正确得条码");
+            RxToast.warning("请扫描或输入正确的条码");
             return;
         }
         showNumDialog(message);
     }
 
     private void showNumDialog(String message) {
-        RxDialogEditSureCancel numDialog = new RxDialogEditSureCancel(this);
+        numDialog = new RxDialogEditSureCancel(this);
         numDialog.getTitleView().setText(String.format("编辑%s数量", message));
         numDialog.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
         numDialog.getCancelView().setText("继续编辑效期");
@@ -174,6 +181,7 @@ public class WarehouseScanDetailsActivity extends BaseActivity {
                     adapter.setNewData(null);
                     finish();
                 }, throwable -> {
+                    RxToast.error(throwable.toString());
                 });
     }
 
@@ -191,15 +199,19 @@ public class WarehouseScanDetailsActivity extends BaseActivity {
                     });
                     dialogSureCancel.getCancelView().setOnClickListener(view1 -> dialogSureCancel.dismiss());
                     dialogSureCancel.show();
+                } else {
+                    finish();
                 }
                 break;
             case R.id.text_post:
+                vib();
                 if (adapter.getData().size() == 0) {
                     RxToast.warning("没有数据可以提交");
                     return;
                 }
                 updateRuKuData(adapter.getData());
                 break;
+            default:
         }
     }
 }

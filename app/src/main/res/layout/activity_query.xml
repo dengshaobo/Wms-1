@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -27,31 +29,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="复核"
+                android:text="查询"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/sp_17"
                 android:textStyle="bold" />
         </android.support.v7.widget.Toolbar>
 
+        <EditText
+            android:id="@+id/edt_warehouse_warehouseNum"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/colorWhite"
+            android:hint="输入条码或货位"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/colorBFBFBF"
+            android:textSize="@dimen/sp_14" />
     </android.support.design.widget.AppBarLayout>
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlAccentColor="@color/white"
-        app:srlEnablePreviewInEditMode="true"
-        app:srlPrimaryColor="@color/colorPrimary">
-
-        <com.scwang.smartrefresh.header.BezierCircleHeader
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never" />
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        android:overScrollMode="never" />
 
 </LinearLayout>

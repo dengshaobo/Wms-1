@@ -23,10 +23,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class HttpUtils {
+    //http://106.15.73.135:8017正式
+    //http://192.168.1.7:8002测试
 
-    // private static final String BASE_URL = " http://139.224.57.189:8017";
-    //private String BASE_URL = "http://192.168.1.6:8002/api/";
-    private String BASE_URL = "";
+
+    private static final String BASE_URL = "http://106.15.73.135:8017/api/";
     private Retrofit retrofit;
 
     private static class SingletonHolder {
@@ -34,7 +35,6 @@ public class HttpUtils {
     }
 
     private HttpUtils() {
-        BASE_URL = RxSPTool.getString(MyApplication.getContext(), "BaseUrl");
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         builder.readTimeout(10, TimeUnit.SECONDS);
         builder.connectTimeout(10, TimeUnit.SECONDS);
@@ -46,7 +46,6 @@ public class HttpUtils {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(interceptor);
         }
-
         retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
                 .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())

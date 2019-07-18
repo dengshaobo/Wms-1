@@ -1,16 +1,17 @@
 package com.hzx.wms.warehouse;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hzx.wms.R;
 import com.hzx.wms.app.BaseActivity;
+import com.hzx.wms.app.Constants;
 import com.hzx.wms.bean.DifferentBean;
 import com.hzx.wms.bean.SearchBean;
 import com.hzx.wms.http.Api;
@@ -22,11 +23,8 @@ import com.hzx.wms.utils.SoundPlayUtils;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.vondear.rxtool.RxActivityTool;
-import com.vondear.rxtool.RxLogTool;
-import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 import com.vondear.rxui.view.dialog.RxDialogSure;
-import com.vondear.rxui.view.dialog.RxDialogSureCancel;
 
 import java.util.HashMap;
 
@@ -36,6 +34,10 @@ import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * @author qinl
+ * @date 2019/7/3
+ */
 public class WarehouseScanActivity extends BaseActivity {
 
     @Bind(R.id.img_back)
@@ -44,8 +46,13 @@ public class WarehouseScanActivity extends BaseActivity {
     EditText edtWarehouseWarehouseHw;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    int id;
-    WarehouseDifferentAdapter adapter;
+    @Bind(R.id.text_title)
+    TextView textTitle;
+
+    private int id;
+    private String inCode;
+    private WarehouseDifferentAdapter adapter;
+    private final static int REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,23 +64,22 @@ public class WarehouseScanActivity extends BaseActivity {
 
     private void initView() {
         SoundPlayUtils.init(this);
-        //软键盘回车搜索
         EditSearchAction action = new EditSearchAction();
         action.searchAction(this, edtWarehouseWarehouseHw);
         action.setListener(this::intentNext);
-
         id = getIntent().getIntExtra("id", 0);
-        //初始化状态view
+        inCode = getIntent().getStringExtra("in_code");
+        textTitle.setText(String.format("%s入库", inCode));
         loadView = loadView(recyclerView);
         errorView = errorView(recyclerView);
         emptyView = emptyView(recyclerView);
-        //初始化列表
         LinearLayoutManager manager = new LinearLayoutManager(WarehouseScanActivity.this);
         recyclerView.setLayoutManager(manager);
         adapter = new WarehouseDifferentAdapter(R.layout.activity_warehouse_different_item, null);
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(adapter);
-
+        errorView.setOnClickListener(view -> getData("1", "100"));
+        //（差异）点击查看入库详细数据
         adapter.setOnItemClickListener((adapter, view, position) -> {
             DifferentBean data = (DifferentBean) adapter.getData().get(position);
             HashMap<String, String> params = new HashMap<>(1);
@@ -85,27 +91,24 @@ public class WarehouseScanActivity extends BaseActivity {
                     .observeOn(AndroidSchedulers.mainThread())
                     .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                     .subscribe(searchBeanBaseBean -> {
-                        RxLogTool.e("xxxxxxxxx" + searchBeanBaseBean.toString());
-                        StringBuffer stringBuffer = new StringBuffer();
-                        stringBuffer.append("应上架数量:" + searchBeanBaseBean.getData().getNum() + "\n");
+                        StringBuilder stringBuffer = new StringBuilder();
+                        stringBuffer.append("应上架数量:").append(searchBeanBaseBean.getData().getNum()).append("\n");
                         int count = 0;
                         for (SearchBean.ListBean info : searchBeanBaseBean.getData().getList()) {
                             count = count + Integer.parseInt(info.getNum());
-                            stringBuffer.append(info.getWare_location() + "货位已上架:" + info.getNum() + "\n");
+                            stringBuffer.append(info.getWare_location()).append("货位已上架:").append(info.getNum()).append("\n");
                         }
-                        stringBuffer.append("已上架数量:" + count);
+                        stringBuffer.append("已上架数量:").append(count);
                         RxDialogSure sure = new RxDialogSure(this);
                         sure.getTitleView().setText("差异");
-                        sure.getContentView().setGravity(Gravity.LEFT);
+                        sure.getContentView().setGravity(Gravity.START);
                         sure.getContentView().setText(stringBuffer.toString());
                         sure.getSureView().setOnClickListener(view1 -> sure.dismiss());
                         sure.show();
                     }, throwable -> {
-                        RxLogTool.e("xxxxxxxxx");
                     });
         });
-
-        errorView.setOnClickListener(view -> getData("1", "100"));
+        getData("1", "100");
     }
 
     @Override
@@ -114,20 +117,14 @@ public class WarehouseScanActivity extends BaseActivity {
             SoundPlayUtils.play(8);
             return;
         }
-        if (message.length() > 7) {
-            RxToast.warning("请扫描或输入正确得货位");
+        if (message.length() > Constants.WAREHOUSE_LENGTH) {
+            RxToast.warning("请扫描或输入正确的货位");
             return;
         }
         Bundle bundle = new Bundle();
         bundle.putString("location", message);
         bundle.putInt("id", id);
-        RxActivityTool.skipActivity(this, WarehouseScanDetailsActivity.class, bundle);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getData("1", "100");
+        RxActivityTool.skipActivityForResult(this, WarehouseScanDetailsActivity.class, bundle, REQUEST_CODE);
     }
 
     private void getData(String page, String limit) {
@@ -151,15 +148,21 @@ public class WarehouseScanActivity extends BaseActivity {
                     if (adapter.getData().size() == 0) {
                         adapter.setEmptyView(emptyView);
                     }
-
-                }, throwable -> {
-                    adapter.setEmptyView(errorView);
-                });
+                }, throwable -> adapter.setEmptyView(errorView));
     }
 
 
     @OnClick(R.id.img_back)
     public void onViewClicked() {
         finish();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            getData("1", "100");
+        }
     }
 }

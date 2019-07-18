@@ -4,10 +4,12 @@ import com.hzx.wms.bean.AppUpdate;
 import com.hzx.wms.bean.BaseBean;
 import com.hzx.wms.bean.BaseEntity;
 import com.hzx.wms.bean.CheckBean;
+import com.hzx.wms.bean.ReviewBean;
 import com.hzx.wms.bean.DifferentBean;
 import com.hzx.wms.bean.LoginBean;
 import com.hzx.wms.bean.RuKuBean;
 import com.hzx.wms.bean.SearchBean;
+import com.hzx.wms.bean.StockBean;
 import com.hzx.wms.bean.TaskListBean;
 import com.hzx.wms.bean.WhoBean;
 
@@ -144,7 +146,7 @@ public interface Api {
      * @return
      */
     @GET("warehouse/task-list/check/list")
-    Observable<BaseBean<List<CheckBean>>> query(@QueryMap Map<String, String> params);
+    Observable<BaseBean<List<ReviewBean>>> query(@QueryMap Map<String, String> params);
 
 
     /**
@@ -158,6 +160,7 @@ public interface Api {
 
     /**
      * 差异
+     *
      * @param id
      * @param params
      * @return
@@ -165,11 +168,43 @@ public interface Api {
     @GET("warehouse/prepare-in-order/prepare-in-ware/different/{id}")
     Observable<BaseBean<List<DifferentBean>>> getDifferent(@Path("id") int id, @QueryMap Map<String, String> params);
 
-
+    /**
+     * 提交包裹重量
+     *
+     * @param requestBody
+     * @return
+     */
     @PUT("warehouse/task-list/pack")
     Observable<BaseBean> putWeight(@Body RequestBody requestBody);
+
 
     @POST("/wms/version/get_version")
     Observable<BaseEntity<List<AppUpdate>>> getVersion();
 
+    /**
+     * 获取货位或条码详情
+     *
+     * @param params
+     * @return
+     */
+    @GET("warehouse/stock/normal")
+    Observable<BaseBean<List<StockBean>>> getData(@QueryMap Map<String, String> params);
+
+    /**
+     * 获取盘点列表
+     *
+     * @param params
+     * @return
+     */
+    @GET("warehouse/stock/check")
+    Observable<BaseBean<List<CheckBean>>> getCheckData(@QueryMap Map<String, String> params);
+
+    /**
+     * 获取盘点列表详情
+     *
+     * @param params
+     * @return
+     */
+    @GET("warehouse/stock/check")
+    Observable<BaseBean> getCheckDetailsData(@Path("id") int id, @QueryMap Map<String, String> params);
 }

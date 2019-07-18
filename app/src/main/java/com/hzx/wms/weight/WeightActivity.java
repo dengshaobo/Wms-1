@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.hzx.wms.R;
 import com.hzx.wms.app.BaseActivity;
+import com.hzx.wms.app.Constants;
 import com.hzx.wms.app.MyApplication;
 import com.hzx.wms.bean.WeightBean;
 import com.hzx.wms.greendao.DaoSession;
@@ -42,6 +43,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+
+/**
+ * @author  qinl
+ * @date  2019/7/10
+*/
 
 public class WeightActivity extends BaseActivity {
 
@@ -218,7 +224,7 @@ public class WeightActivity extends BaseActivity {
 
     @Override
     public void intentNext(String message) {
-        if(message==null){
+        if (message == null) {
             SoundPlayUtils.play(8);
             return;
         }
@@ -247,7 +253,7 @@ public class WeightActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(listBaseBean -> {
-                            if (!listBaseBean.getCode().equals("1000")) {
+                            if (!listBaseBean.getCode().equals(Constants.CODE_SUCCESS)) {
                                 SoundPlayUtils.play(5);
                                 RxToast.error(listBaseBean.getMsg());
                                 return;
@@ -269,6 +275,7 @@ public class WeightActivity extends BaseActivity {
                 break;
             case R.id.text_post:
                 break;
+            default:
         }
     }
 

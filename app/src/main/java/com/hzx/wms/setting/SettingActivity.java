@@ -15,11 +15,9 @@ import com.hzx.wms.app.MyApplication;
 import com.hzx.wms.login.LoginActivity;
 import com.hzx.wms.utils.UpdateUtil;
 import com.vondear.rxtool.RxActivityTool;
-import com.vondear.rxtool.RxLogTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.RxTool;
 import com.vondear.rxui.view.dialog.RxDialogEditSureCancel;
-import com.vondear.rxui.view.dialog.RxDialogSure;
 import com.vondear.rxui.view.dialog.RxDialogSureCancel;
 
 import butterknife.Bind;
@@ -92,6 +90,8 @@ public class SettingActivity extends BaseActivity {
                 editSureCancel.getCancelView().setOnClickListener(view1 -> editSureCancel.dismiss());
                 editSureCancel.show();
                 break;
+
+            default:
         }
     }
 
@@ -99,7 +99,8 @@ public class SettingActivity extends BaseActivity {
         Intent intent = MyApplication.getContext().getPackageManager().getLaunchIntentForPackage(MyApplication.getContext().getPackageName());
         PendingIntent restartIntent = PendingIntent.getActivity(MyApplication.getContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager mgr = (AlarmManager) MyApplication.getContext().getSystemService(Context.ALARM_SERVICE);
-        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, restartIntent); // 1秒钟后重启应用
+        // 1秒钟后重启应用
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, restartIntent);
         RxActivityTool.AppExit(MyApplication.getContext());
     }
 

@@ -23,6 +23,11 @@ import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * @author  qinl
+ * @date  2019/7/3
+*/
+
 public class LoginActivity extends BaseActivity {
 
     @Bind(R.id.edt_name)

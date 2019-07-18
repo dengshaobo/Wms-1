@@ -1,7 +1,7 @@
 package com.hzx.wms.review;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,10 +17,10 @@ import com.hzx.wms.http.HttpUtils;
 import com.hzx.wms.http.RxUtils;
 import com.hzx.wms.pick.TaskListAdapter;
 import com.hzx.wms.utils.GsonUtils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.vondear.rxtool.RxActivityTool;
-import com.vondear.rxtool.RxLogTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.RxTool;
 import com.vondear.rxtool.view.RxToast;
@@ -38,6 +38,10 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+/**
+ * @author qinl
+ * @date 2019/7/3
+ */
 public class ReviewActivity extends BaseActivity {
 
     @Bind(R.id.recyclerView)
@@ -47,6 +51,8 @@ public class ReviewActivity extends BaseActivity {
     ImageView imgBack;
     @Bind(R.id.text_mine)
     TextView textMine;
+    @Bind(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
     private View loadView;
     private View errorView;
     private View emptyView;
@@ -76,6 +82,7 @@ public class ReviewActivity extends BaseActivity {
         adapter.setEnableLoadMore(true);
 
         errorView.setOnClickListener(view -> getData("1", "100"));
+        refreshLayout.setOnRefreshListener(refreshLayout1 -> getData("1", "100"));
         //item子控件点击事件
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             TaskListBean taskListBean = (TaskListBean) adapter.getData().get(position);
@@ -92,13 +99,10 @@ public class ReviewActivity extends BaseActivity {
             sureCancel.getCancelView().setOnClickListener(v -> sureCancel.cancel());
             sureCancel.show();
         });
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
         getData("1", "100");
     }
+
 
     private void getData(String page, String limit) {
         RxTool.delayToDo(200, () -> {
@@ -112,7 +116,6 @@ public class ReviewActivity extends BaseActivity {
                     .doOnSubscribe(disposable -> adapter.setEmptyView(loadView))
                     .observeOn(Schedulers.io())
                     .map(listBaseBean -> {
-                        RxLogTool.i("2:" + Thread.currentThread().getName());
                         int id = Integer.parseInt(RxSPTool.getString(this, "id"));
                         List<TaskListBean> list = new ArrayList<>();
                         for (TaskListBean info : listBaseBean.getData()) {
@@ -125,13 +128,16 @@ public class ReviewActivity extends BaseActivity {
                     .observeOn(AndroidSchedulers.mainThread())
                     .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                     .subscribe(taskListBeans -> {
-                        RxLogTool.i("3:" + Thread.currentThread().getName());
+                        refreshLayout.finishRefresh();
                         adapter.setNewData(taskListBeans);
                         //设置空view
                         if (adapter.getData().size() == 0) {
                             adapter.setEmptyView(emptyView);
                         }
-                    }, throwable -> adapter.setEmptyView(errorView));
+                    }, throwable -> {
+                        refreshLayout.finishRefresh(false);
+                        adapter.setEmptyView(errorView);
+                    });
         });
     }
 
@@ -162,11 +168,17 @@ public class ReviewActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.text_mine:
-                RxActivityTool.skipActivity(this, MyReviewActivity.class);
+                RxActivityTool.skipActivityForResult(this, MyReviewActivity.class,1);
                 break;
             default:
         }
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1){
+            getData("1", "100");
+        }
+    }
 }

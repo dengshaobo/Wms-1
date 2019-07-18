@@ -2,72 +2,39 @@ package com.hzx.wms.bean;
 
 /**
  * @author qinl
- * @package qinl.com.hzxoderquery.bean
- * @date 2019/6/12 9:32
+ * @package com.hzx.wms.bean
+ * @date 2019/7/16 11:00
  * @fileName CheckBean
  * @describe TODO
  */
 
 public class CheckBean {
 
-
     /**
-     * id : 83
-     * prepare_out_order_id : 12
-     * business_id : 1
-     * order_no : D164164516111SPLIT703
-     * gnum : 1
-     * consignee : 郭俊秀
-     * consignee_telephone : 18533956489
-     * consignee_address : 四川省成都市双流区黄甲镇长梗新居
-     * sender : 成都双流综保
-     * sender_telephone : 89460888
-     * sender_address : 四川省成都市双流区货运大道888号
-     * normal_ware_id : 1
-     * bar_code : 00001
-     * num : 10
-     * pick_num : 10
-     * confirm_num : null
-     * confirm_time : null
-     * print_times : null
-     * order_type : 1
-     * declare_info : null
-     * status : 1
-     * deleted_at : null
-     * created_at : 2019-06-11 15:45:57
-     * updated_at : 2019-06-13 10:43:15
-     * logistics_infos : {"order_no":"D164164516111SPLIT703","logistics_no":"73114812571266"}
-     * prepare_out_order : {"id":12,"check_user_id":1}
-     * normal_ware : {"id":1,"name":"测试商品1"}
+     * id : 1
+     * inventory_no : 1563172463909
+     * business_id : null
+     * user_id : 1
+     * check_user_id : 1
+     * status : 0
+     * created_at : 2019-07-15 14:34:23
+     * updated_at : 2019-07-16 10:06:41
+     * business : null
+     * user : {"id":1,"name":"管理员"}
+     * check_user : {"id":1,"name":"管理员"}
      */
 
     private int id;
-    private int prepare_out_order_id;
-    private int business_id;
-    private String order_no;
-    private int gnum;
-    private String consignee;
-    private String consignee_telephone;
-    private String consignee_address;
-    private String sender;
-    private String sender_telephone;
-    private String sender_address;
-    private int normal_ware_id;
-    private String bar_code;
-    private int num;
-    private int pick_num;
-    private int confirm_num;
-    private Object confirm_time;
-    private Object print_times;
-    private int order_type;
-    private Object declare_info;
-    private int status;
-    private Object deleted_at;
+    private String inventory_no;
+    private String business_id;
+    private int user_id;
+    private int check_user_id;
+    private String status;
     private String created_at;
     private String updated_at;
-    private LogisticsInfosBean logistics_infos;
-    private PrepareOutOrderBean prepare_out_order;
-    private NormalWareBean normal_ware;
+    private String business;
+    private UserBean user;
+    private CheckUserBean check_user;
 
     public int getId() {
         return id;
@@ -77,172 +44,44 @@ public class CheckBean {
         this.id = id;
     }
 
-    public int getPrepare_out_order_id() {
-        return prepare_out_order_id;
+    public String getInventory_no() {
+        return inventory_no;
     }
 
-    public void setPrepare_out_order_id(int prepare_out_order_id) {
-        this.prepare_out_order_id = prepare_out_order_id;
+    public void setInventory_no(String inventory_no) {
+        this.inventory_no = inventory_no;
     }
 
-    public int getBusiness_id() {
+    public Object getBusiness_id() {
         return business_id;
     }
 
-    public void setBusiness_id(int business_id) {
+    public void setBusiness_id(String business_id) {
         this.business_id = business_id;
     }
 
-    public String getOrder_no() {
-        return order_no;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setOrder_no(String order_no) {
-        this.order_no = order_no;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
-    public int getGnum() {
-        return gnum;
+    public int getCheck_user_id() {
+        return check_user_id;
     }
 
-    public void setGnum(int gnum) {
-        this.gnum = gnum;
+    public void setCheck_user_id(int check_user_id) {
+        this.check_user_id = check_user_id;
     }
 
-    public String getConsignee() {
-        return consignee;
-    }
-
-    public void setConsignee(String consignee) {
-        this.consignee = consignee;
-    }
-
-    public String getConsignee_telephone() {
-        return consignee_telephone;
-    }
-
-    public void setConsignee_telephone(String consignee_telephone) {
-        this.consignee_telephone = consignee_telephone;
-    }
-
-    public String getConsignee_address() {
-        return consignee_address;
-    }
-
-    public void setConsignee_address(String consignee_address) {
-        this.consignee_address = consignee_address;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public String getSender_telephone() {
-        return sender_telephone;
-    }
-
-    public void setSender_telephone(String sender_telephone) {
-        this.sender_telephone = sender_telephone;
-    }
-
-    public String getSender_address() {
-        return sender_address;
-    }
-
-    public void setSender_address(String sender_address) {
-        this.sender_address = sender_address;
-    }
-
-    public int getNormal_ware_id() {
-        return normal_ware_id;
-    }
-
-    public void setNormal_ware_id(int normal_ware_id) {
-        this.normal_ware_id = normal_ware_id;
-    }
-
-    public String getBar_code() {
-        return bar_code;
-    }
-
-    public void setBar_code(String bar_code) {
-        this.bar_code = bar_code;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public int getPick_num() {
-        return pick_num;
-    }
-
-    public void setPick_num(int pick_num) {
-        this.pick_num = pick_num;
-    }
-
-    public int getConfirm_num() {
-        return confirm_num;
-    }
-
-    public void setConfirm_num(int confirm_num) {
-        this.confirm_num = confirm_num;
-    }
-
-    public Object getConfirm_time() {
-        return confirm_time;
-    }
-
-    public void setConfirm_time(Object confirm_time) {
-        this.confirm_time = confirm_time;
-    }
-
-    public Object getPrint_times() {
-        return print_times;
-    }
-
-    public void setPrint_times(Object print_times) {
-        this.print_times = print_times;
-    }
-
-    public int getOrder_type() {
-        return order_type;
-    }
-
-    public void setOrder_type(int order_type) {
-        this.order_type = order_type;
-    }
-
-    public Object getDeclare_info() {
-        return declare_info;
-    }
-
-    public void setDeclare_info(Object declare_info) {
-        this.declare_info = declare_info;
-    }
-
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Object getDeleted_at() {
-        return deleted_at;
-    }
-
-    public void setDeleted_at(Object deleted_at) {
-        this.deleted_at = deleted_at;
     }
 
     public String getCreated_at() {
@@ -261,64 +100,38 @@ public class CheckBean {
         this.updated_at = updated_at;
     }
 
-    public LogisticsInfosBean getLogistics_infos() {
-        return logistics_infos;
+    public Object getBusiness() {
+        return business;
     }
 
-    public void setLogistics_infos(LogisticsInfosBean logistics_infos) {
-        this.logistics_infos = logistics_infos;
+    public void setBusiness(String business) {
+        this.business = business;
     }
 
-    public PrepareOutOrderBean getPrepare_out_order() {
-        return prepare_out_order;
+    public UserBean getUser() {
+        return user;
     }
 
-    public void setPrepare_out_order(PrepareOutOrderBean prepare_out_order) {
-        this.prepare_out_order = prepare_out_order;
+    public void setUser(UserBean user) {
+        this.user = user;
     }
 
-    public NormalWareBean getNormal_ware() {
-        return normal_ware;
+    public CheckUserBean getCheck_user() {
+        return check_user;
     }
 
-    public void setNormal_ware(NormalWareBean normal_ware) {
-        this.normal_ware = normal_ware;
+    public void setCheck_user(CheckUserBean check_user) {
+        this.check_user = check_user;
     }
 
-    public static class LogisticsInfosBean {
+    public static class UserBean {
         /**
-         * order_no : D164164516111SPLIT703
-         * logistics_no : 73114812571266
-         */
-
-        private String order_no;
-        private String logistics_no;
-
-        public String getOrder_no() {
-            return order_no;
-        }
-
-        public void setOrder_no(String order_no) {
-            this.order_no = order_no;
-        }
-
-        public String getLogistics_no() {
-            return logistics_no;
-        }
-
-        public void setLogistics_no(String logistics_no) {
-            this.logistics_no = logistics_no;
-        }
-    }
-
-    public static class PrepareOutOrderBean {
-        /**
-         * id : 12
-         * check_user_id : 1
+         * id : 1
+         * name : 管理员
          */
 
         private int id;
-        private int check_user_id;
+        private String name;
 
         public int getId() {
             return id;
@@ -328,19 +141,19 @@ public class CheckBean {
             this.id = id;
         }
 
-        public int getCheck_user_id() {
-            return check_user_id;
+        public String getName() {
+            return name;
         }
 
-        public void setCheck_user_id(int check_user_id) {
-            this.check_user_id = check_user_id;
+        public void setName(String name) {
+            this.name = name;
         }
     }
 
-    public static class NormalWareBean {
+    public static class CheckUserBean {
         /**
          * id : 1
-         * name : 测试商品1
+         * name : 管理员
          */
 
         private int id;

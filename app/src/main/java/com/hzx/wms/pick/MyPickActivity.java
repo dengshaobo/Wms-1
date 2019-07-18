@@ -1,5 +1,6 @@
 package com.hzx.wms.pick;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import com.hzx.wms.http.HttpUtils;
 import com.hzx.wms.http.RxUtils;
 import com.hzx.wms.review.CheckOutAdapter;
 import com.hzx.wms.utils.RecycleViewDivider;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.vondear.rxtool.RxActivityTool;
@@ -42,6 +44,8 @@ public class MyPickActivity extends BaseActivity {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     CheckOutAdapter adapter;
+    @Bind(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
     private int mNextRequestPage = 1;
     private static final int LIMIT = 10;
 
@@ -64,17 +68,16 @@ public class MyPickActivity extends BaseActivity {
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(adapter);
 
-
-        adapter.setPreLoadNumber(8);
-        adapter.setEnableLoadMore(true);
-        errorView.setOnClickListener(view -> getPickTask("1", "100"));
         adapter.setOnItemClickListener((adapter, view, position) -> {
             TaskListBean bean = (TaskListBean) adapter.getData().get(position);
             Bundle bundle = new Bundle();
             bundle.putSerializable("task", bean);
-            RxActivityTool.skipActivity(MyPickActivity.this, MyPickDetailsActivity.class, bundle);
+            RxActivityTool.skipActivityForResult(MyPickActivity.this, MyPickDetailsActivity.class, bundle, 1);
         });
 
+        errorView.setOnClickListener(view -> getPickTask("1", "100"));
+        refreshLayout.setOnRefreshListener(refreshLayout -> getPickTask("1", "100"));
+        getPickTask("1", "100");
     }
 
     private void getPickTask(String page, String limit) {
@@ -86,8 +89,8 @@ public class MyPickActivity extends BaseActivity {
                 .retry(1)
                 .compose(RxUtils.handleGlobalError(this))
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(disposable -> loading.show())
-                .doFinally(() -> loading.cancel())
+//                .doOnSubscribe(disposable -> loading.show())
+//                .doFinally(() -> loading.cancel())
                 .observeOn(Schedulers.io())
                 .map(listBaseBean -> {
                     RxLogTool.i(Thread.currentThread().getName());
@@ -103,6 +106,7 @@ public class MyPickActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(listBaseBean -> {
+                            refreshLayout.finishRefresh();
                             adapter.setNewData(listBaseBean);
                             //设置空view
                             if (adapter.getData().size() == 0) {
@@ -116,18 +120,22 @@ public class MyPickActivity extends BaseActivity {
                             mNextRequestPage++;
                             adapter.loadMoreComplete();
                         }
-                        , throwable -> {
-                        });
+                        , throwable -> refreshLayout.finishRefresh());
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getPickTask("1", "100");
-    }
 
     @OnClick(R.id.img_back)
     public void onViewClicked() {
         finish();
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            getPickTask("1", "100");
+        }
+    }
+
 }

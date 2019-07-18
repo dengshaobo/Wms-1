@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.hzx.wms.R;
 import com.hzx.wms.app.BaseActivity;
+import com.hzx.wms.app.Constants;
 import com.hzx.wms.app.MyApplication;
 import com.hzx.wms.bean.RepeatBean;
 import com.hzx.wms.greendao.DaoSession;
@@ -26,6 +27,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * @author qinl
+ * @date 2019/7/3
+ */
 public class RepeatActivity extends BaseActivity {
 
     @Bind(R.id.img_back)
@@ -72,6 +77,10 @@ public class RepeatActivity extends BaseActivity {
             SoundPlayUtils.play(8);
             return;
         }
+        if (message.length() < Constants.WAREHOUSE_LENGTH) {
+            RxToast.warning("请扫描或输入正确的条码");
+            return;
+        }
         textBarcode.setText(String.format("物流单号：%s", message));
         List<RepeatBean> list = daoSession.queryRaw(RepeatBean.class, " where barcode = ?", message);
         if (list.size() > 0) {
@@ -93,6 +102,7 @@ public class RepeatActivity extends BaseActivity {
             case R.id.text_post:
                 RxToast.warning("正在完善");
                 break;
+            default:
         }
     }
 

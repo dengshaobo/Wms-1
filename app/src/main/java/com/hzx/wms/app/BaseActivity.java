@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -71,6 +73,11 @@ public class BaseActivity extends AppCompatActivity {
         loading.setLoadingText("正在加载请稍后。。。");
     }
 
+
+    @Override
+    public void setContentView(View view) {
+
+    }
 
     @Override
     public void onResume() {
@@ -140,5 +147,14 @@ public class BaseActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+    public void vib() {
+        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assert vibrator != null;
+            vibrator.vibrate(VibrationEffect.createOneShot(200, 255));
+        }
+    }
+
 
 }
