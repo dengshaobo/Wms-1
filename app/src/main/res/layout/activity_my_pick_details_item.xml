@@ -84,4 +84,12 @@
         app:layout_constraintLeft_toRightOf="@+id/text_num"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_picked" />
+
+    <TextView
+        android:textColor="@color/color454545"
+        app:layout_constraintTop_toBottomOf="@+id/text_num"
+        android:id="@+id/text_name"
+        android:text="名称："
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </android.support.constraint.ConstraintLayout>

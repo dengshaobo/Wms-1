@@ -68,8 +68,8 @@ public class MyReviewActivity extends BaseActivity {
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             TaskListBean taskListBean = adapter.getData().get(position);
             Bundle bundle = new Bundle();
-            bundle.putString("id", String.valueOf(taskListBean.getId()));
-
+            bundle.putInt("id", taskListBean.getId());
+            bundle.putString("out_code", taskListBean.getOut_code());
             RxActivityTool.skipActivity(MyReviewActivity.this, MyReviewMailNoActivity.class, bundle);
         });
         errorView.setOnClickListener(v -> getData("1", "100"));
@@ -118,8 +118,6 @@ public class MyReviewActivity extends BaseActivity {
                     adapter.setEmptyView(errorView);
                 });
     }
-
-
 
 
     @OnClick(R.id.img_back)

@@ -28,6 +28,7 @@ import com.hzx.wms.utils.GsonUtils;
 import com.hzx.wms.utils.SoundPlayUtils;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
+import com.vondear.rxtool.RxLogTool;
 import com.vondear.rxtool.view.RxToast;
 import com.vondear.rxui.view.dialog.RxDialogSureCancel;
 
@@ -102,9 +103,9 @@ public class WeightActivity extends BaseActivity {
     @Override
     public void onPause() {
         super.onPause();
-        if (client != null) {
-            client.close();
-        }
+//        if (client != null) {
+//            client.close();
+//        }
     }
 
     @Override
@@ -142,16 +143,17 @@ public class WeightActivity extends BaseActivity {
                     break;
                 case BlueToothTool.DATA:
                     String strReverse = new StringBuffer(msg.obj.toString()).reverse().toString();
+                  //  Log.e("Tag", "handleMessage: " +strReverse);
                     if (strReverse.length() == 8) {
                         double weight = Double.parseDouble(strReverse.replace("=", ""));
                         String weight1 = String.valueOf(weight * 100).replaceAll("^(0+)", "");
                         double weight2 = Double.parseDouble(weight1) / 100;
                         theActivity.txtRepeatTotalWeight.setText(String.valueOf(weight2));
                     } else {
-                        if (buffer.length() < 50) {
-                            buffer.append(getWeight);
-                            if (buffer.length() > 48) {
-                                Log.e("Tag", "handleMessage: " + buffer.toString());
+                        if (buffer.length() < 70) {
+                            buffer.append(strReverse);
+                            if (buffer.length() > 68) {
+                             //   Log.e("Tag", "handleMessage: " + buffer.toString());
                                 String strReverse1 = new StringBuffer(buffer).reverse().toString();
                                 String[] weight = strReverse1.split("=");
                                 if (!weight[3].equals(theActivity.txtRepeatTotalWeight.getText().toString())) {
@@ -160,6 +162,15 @@ public class WeightActivity extends BaseActivity {
                                 buffer.delete(0, buffer.length());
                             }
                         }
+
+
+//                        if(buffer.length()<10000){
+//                            buffer.append(strReverse);
+//                            RxLogTool.e(buffer.toString());
+//                            if (buffer.length() > 9998) {
+//                                buffer.delete(0, buffer.length());
+//                            }
+//                        }
                     }
                     break;
                 default:

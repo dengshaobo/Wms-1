@@ -364,6 +364,15 @@ public class TaskListBean implements Serializable {
         private int num;
         private int pick_num;
         private String ware_location;
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
 
         public String getBar_code() {
             return bar_code;

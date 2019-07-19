@@ -6,9 +6,9 @@
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
-        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
 
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
@@ -31,7 +31,26 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/sp_17"
                 android:textStyle="bold" />
+
         </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:id="@+id/text_out_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_10"
+            android:text="预出库编号："
+            android:textColor="@color/colorWhite" />
+
+        <TextView
+            android:id="@+id/text_review_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_10"
+            android:text="已复核数量："
+            android:textColor="@color/colorWhite" />
 
         <EditText
             android:id="@+id/edt_warehouse_warehouseNum"

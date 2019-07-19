@@ -19,6 +19,7 @@ import com.hzx.wms.utils.RecycleViewDivider;
 import com.hzx.wms.utils.SoundPlayUtils;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
+import com.vondear.rxtool.RxLogTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 import com.vondear.rxui.view.dialog.RxDialogSure;
@@ -53,6 +54,7 @@ public class MyReviewDetailsActivity extends BaseActivity {
     String mailNo;
     List<String> list = new ArrayList<>();
     List<String> checkList = new ArrayList<>();
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class MyReviewDetailsActivity extends BaseActivity {
     RxDialogSure sure;
 
     private void initView() {
+        id = getIntent().getIntExtra("id", 0);
         //初始化状态view
         loadView = loadView(recyclerView);
         errorView = errorView(recyclerView);
@@ -189,8 +192,11 @@ public class MyReviewDetailsActivity extends BaseActivity {
                 .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(baseBean -> {
                     SoundPlayUtils.play(7);
+                    int size = RxSPTool.getInt(MyReviewDetailsActivity.this, String.valueOf(id));
+                    RxSPTool.putInt(MyReviewDetailsActivity.this, String.valueOf(id), size + 1);
                     finish();
-                }, throwable -> {});
+                }, throwable -> {
+                });
     }
 
     @OnClick(R.id.img_back)
