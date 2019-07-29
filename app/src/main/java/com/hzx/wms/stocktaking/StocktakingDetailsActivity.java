@@ -1,6 +1,5 @@
-package com.hzx.wms.check;
+package com.hzx.wms.stocktaking;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.hzx.wms.R;
@@ -12,12 +11,12 @@ import com.vondear.rxtool.view.RxToast;
  * @date 2019/7/16
  */
 
-public class CheckDetailsActivity extends BaseActivity {
+public class StocktakingDetailsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_details);
+        setContentView(R.layout.activity_stocktaking_details);
         int id = getIntent().getExtras().getInt("id");
         RxToast.success(String.valueOf(id));
     }

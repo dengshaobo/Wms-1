@@ -4,12 +4,13 @@ import com.hzx.wms.bean.AppUpdate;
 import com.hzx.wms.bean.BaseBean;
 import com.hzx.wms.bean.BaseEntity;
 import com.hzx.wms.bean.CheckBean;
+import com.hzx.wms.bean.InterceptBean;
 import com.hzx.wms.bean.ReviewBean;
 import com.hzx.wms.bean.DifferentBean;
 import com.hzx.wms.bean.LoginBean;
 import com.hzx.wms.bean.RuKuBean;
 import com.hzx.wms.bean.SearchBean;
-import com.hzx.wms.bean.StockBean;
+import com.hzx.wms.bean.QueryBean;
 import com.hzx.wms.bean.TaskListBean;
 import com.hzx.wms.bean.WhoBean;
 
@@ -188,7 +189,7 @@ public interface Api {
      * @return
      */
     @GET("warehouse/stock/normal")
-    Observable<BaseBean<List<StockBean>>> getData(@QueryMap Map<String, String> params);
+    Observable<BaseBean<List<QueryBean>>> getData(@QueryMap Map<String, String> params);
 
     /**
      * 获取盘点列表
@@ -207,4 +208,13 @@ public interface Api {
      */
     @GET("warehouse/stock/check")
     Observable<BaseBean> getCheckDetailsData(@Path("id") int id, @QueryMap Map<String, String> params);
+
+    /**
+     * 通过物流单号查询状态(拦截)
+     *
+     * @param params
+     * @return
+     */
+    @GET("warehouse/prepare-out-order/intercept")
+    Observable<BaseBean<List<InterceptBean>>> getIntercept(@QueryMap Map<String, String> params);
 }

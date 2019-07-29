@@ -33,12 +33,20 @@ public class MyPickTaskDetailsListAdapter extends BaseQuickAdapter<TaskListBean.
         helper.setText(R.id.text_location_value, item.getWare_location());
         helper.setText(R.id.text_name, String.format("品名：%s", item.getName()));
         if (item.getPick_num() != 0) {
+            helper.setTextColor(R.id.text_barcode, Color.RED);
+            helper.setTextColor(R.id.text_num, Color.RED);
+            helper.setTextColor(R.id.text_picked, Color.RED);
+            helper.setTextColor(R.id.text_location, Color.RED);
             helper.setTextColor(R.id.text_barcode_value, Color.RED);
             helper.setTextColor(R.id.text_num_value, Color.RED);
             helper.setTextColor(R.id.text_picked_value, Color.RED);
             helper.setTextColor(R.id.text_location_value, Color.RED);
             helper.setTextColor(R.id.text_name, Color.RED);
         } else {
+            helper.setTextColor(R.id.text_barcode, Color.BLACK);
+            helper.setTextColor(R.id.text_num, Color.BLACK);
+            helper.setTextColor(R.id.text_picked, Color.BLACK);
+            helper.setTextColor(R.id.text_location, Color.BLACK);
             helper.setTextColor(R.id.text_barcode_value, Color.BLACK);
             helper.setTextColor(R.id.text_num_value, Color.BLACK);
             helper.setTextColor(R.id.text_picked_value, Color.BLACK);

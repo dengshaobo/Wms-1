@@ -1,5 +1,6 @@
 package com.hzx.wms.review;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,8 +40,6 @@ public class MyReviewActivity extends BaseActivity {
     ImageView imgBack;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
-    private int mNextRequestPage = 1;
-    private static final int LIMIT = 10;
     private static final String NUM = "1";
     CheckOutAdapter adapter;
 
@@ -68,9 +67,9 @@ public class MyReviewActivity extends BaseActivity {
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             TaskListBean taskListBean = adapter.getData().get(position);
             Bundle bundle = new Bundle();
-            bundle.putInt("id", taskListBean.getId());
+            bundle.putString("id", String.valueOf(taskListBean.getId()));
             bundle.putString("out_code", taskListBean.getOut_code());
-            RxActivityTool.skipActivity(MyReviewActivity.this, MyReviewMailNoActivity.class, bundle);
+            RxActivityTool.skipActivityForResult(MyReviewActivity.this, MyReviewMailNoActivity.class, bundle, 1);
         });
         errorView.setOnClickListener(v -> getData("1", "100"));
         refreshLayout.setOnRefreshListener(refreshLayout1 -> getData("1", "100"));
@@ -124,6 +123,16 @@ public class MyReviewActivity extends BaseActivity {
     public void onViewClicked() {
         finish();
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            getData("1", "100");
+        }
+    }
+
 }
 
 

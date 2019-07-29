@@ -4,11 +4,11 @@ package com.hzx.wms.bean;
  * @author qinl
  * @package com.hzx.wms.bean
  * @date 2019/7/8 15:52
- * @fileName StockBean
+ * @fileName QueryBean
  * @describe TODO
  */
 
-public class StockBean {
+public class QueryBean {
 
     /**
      * id : 19

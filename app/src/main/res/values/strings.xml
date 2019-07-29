@@ -13,4 +13,8 @@
     <string name="business">商\u3000\u3000\u3000家:</string>
     <string name="out_code">预出库编号:</string>
     <string name="warehouse">入库</string>
+    <string name="tinker_id">tinkerVersion:1.4.0(3)</string>
+    <string name="login_out">退出登录</string>
+    <string name="setting">设置</string>
+    <string name="update">更新</string>
 </resources>

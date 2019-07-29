@@ -14,6 +14,7 @@ import com.vondear.rxtool.RxActivityTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 
+
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -30,30 +31,38 @@ public class MyReviewMailNoActivity extends BaseActivity {
     ImageView imgBack;
     @Bind(R.id.edt_warehouse_warehouseNum)
     EditText edtWarehouseWarehouseNum;
-    int id;
-    String out_code;
     @Bind(R.id.text_out_code)
     TextView textOutCode;
     @Bind(R.id.text_review_num)
     TextView textReviewNum;
 
+    private String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_review_mail_no);
+
         ButterKnife.bind(this);
+        SoundPlayUtils.init(this);
         //软键盘回车搜索
         EditSearchAction action = new EditSearchAction();
         action.searchAction(this, edtWarehouseWarehouseNum);
         action.setListener(this::intentNext);
 
-        id = getIntent().getIntExtra("id", 0);
-        out_code = getIntent().getStringExtra("out_code");
+        id = getIntent().getStringExtra("id");
+        String outCode = getIntent().getStringExtra("out_code");
+        textOutCode.setText(String.format("预出库编号：%s", outCode));
+    }
 
-        textOutCode.setText(String.format("预出库编号：%s", out_code));
-        int size = RxSPTool.getInt(MyReviewMailNoActivity.this, String.valueOf(id));
-        textReviewNum.setText(String.format(Locale.CHINA,"已复核数量：%d", size));
-        SoundPlayUtils.init(this);
+    @Override
+    public void onResume() {
+        super.onResume();
+        int size = RxSPTool.getInt(MyReviewMailNoActivity.this, id);
+        if (size == -1) {
+            size = 0;
+        }
+        textReviewNum.setText(String.format(Locale.CHINA, "已复核：%d", size));
     }
 
     @Override
@@ -69,12 +78,14 @@ public class MyReviewMailNoActivity extends BaseActivity {
         }
         Bundle bundle = new Bundle();
         bundle.putString("mailNo", message.trim());
-        bundle.putInt("id", id);
+        bundle.putString("id", id);
         RxActivityTool.skipActivity(this, MyReviewDetailsActivity.class, bundle);
     }
 
     @OnClick(R.id.img_back)
     public void onViewClicked() {
+        RxSPTool.remove(MyReviewMailNoActivity.this, id);
         finish();
     }
+
 }

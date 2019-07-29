@@ -2,21 +2,19 @@ package com.hzx.wms.main;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.hzx.wms.R;
 import com.hzx.wms.app.BaseActivity;
 import com.hzx.wms.check.CheckActivity;
+import com.hzx.wms.stocktaking.StocktakingActivity;
 import com.hzx.wms.login.LoginActivity;
 import com.hzx.wms.pick.PickActivity;
 import com.hzx.wms.query.QueryActivity;
@@ -99,10 +97,10 @@ public class MainActivity extends BaseActivity {
                 RxActivityTool.skipActivity(this, SettingActivity.class);
                 break;
             case R.id.card_check:
-                RxToast.warning("拦截功能正在完善。。。", 1000);
+                RxActivityTool.skipActivity(this, CheckActivity.class);
                 break;
             case R.id.card_stocktaking:
-                RxActivityTool.skipActivity(this, CheckActivity.class);
+                RxActivityTool.skipActivity(this, StocktakingActivity.class);
                 break;
             case R.id.card_query:
                 RxActivityTool.skipActivity(this, QueryActivity.class);
@@ -118,7 +116,7 @@ public class MainActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.i("xxxx", "onRequestPermissionsResult granted");
+
             } else {
                 showWaringDialog();
             }

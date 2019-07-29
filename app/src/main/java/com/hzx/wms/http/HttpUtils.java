@@ -2,9 +2,7 @@ package com.hzx.wms.http;
 
 
 import com.hzx.wms.BuildConfig;
-import com.hzx.wms.app.MyApplication;
 import com.vondear.rxtool.RxLogTool;
-import com.vondear.rxtool.RxSPTool;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HttpUtils {
     //http://106.15.73.135:8017正式
     //http://192.168.1.7:8002测试
-
 
     private static final String BASE_URL = "http://106.15.73.135:8017/api/";
     private Retrofit retrofit;

@@ -13,7 +13,6 @@ import com.hzx.wms.main.MainActivity;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.vondear.rxtool.RxActivityTool;
-import com.vondear.rxtool.RxBarTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 
@@ -24,9 +23,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * @author  qinl
- * @date  2019/7/3
-*/
+ * @author qinl
+ * @date 2019/7/3
+ */
 
 public class LoginActivity extends BaseActivity {
 
@@ -42,7 +41,6 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-      //  RxBarTool.setTransparentStatusBar(this);
     }
 
     @OnClick(R.id.btn_login)
@@ -55,7 +53,6 @@ public class LoginActivity extends BaseActivity {
             RxToast.warning("用户名或密码不能为空");
         }
     }
-
 
     private void onLogin(final String name, final String pwd) {
         HttpUtils.getInstance().createService(Api.class)
@@ -75,6 +72,7 @@ public class LoginActivity extends BaseActivity {
                 .doFinally(() -> loading.dismiss())
                 .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(whoBeanBaseBean -> {
+                    //保存用户id、名称
                     RxSPTool.putString(this, "id", whoBeanBaseBean.getData().getUser().getId());
                     RxSPTool.putString(this, "name", whoBeanBaseBean.getData().getUser().getName());
                     RxSPTool.putBoolean(this, "isLogin", true);
@@ -82,5 +80,4 @@ public class LoginActivity extends BaseActivity {
                 }, throwable -> {
                 });
     }
-
 }

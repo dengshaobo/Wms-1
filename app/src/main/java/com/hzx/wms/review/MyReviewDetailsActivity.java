@@ -19,7 +19,6 @@ import com.hzx.wms.utils.RecycleViewDivider;
 import com.hzx.wms.utils.SoundPlayUtils;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
-import com.vondear.rxtool.RxLogTool;
 import com.vondear.rxtool.RxSPTool;
 import com.vondear.rxtool.view.RxToast;
 import com.vondear.rxui.view.dialog.RxDialogSure;
@@ -48,35 +47,35 @@ public class MyReviewDetailsActivity extends BaseActivity {
     EditText edtWarehouseWarehouseNum;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    private static final String NUM = "1";
 
-    MineReviewTaskDetailsAdapter adapter;
-    String mailNo;
     List<String> list = new ArrayList<>();
     List<String> checkList = new ArrayList<>();
-    int id;
+    private RxDialogSure sure;
+    private MineReviewTaskDetailsAdapter adapter;
+    private String mailNo;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_review_details);
         ButterKnife.bind(this);
+        SoundPlayUtils.init(this);
 
-        mailNo = getIntent().getExtras().getString("mailNo");
+        id = getIntent().getStringExtra("id");
+        mailNo = getIntent().getStringExtra("mailNo");
+
         textWarehouse.setText(String.format("运单号：%s", mailNo));
         //软键盘回车搜索
         EditSearchAction action = new EditSearchAction();
         action.searchAction(this, edtWarehouseWarehouseNum);
         action.setListener(this::intentNext);
-        initView();
 
-        SoundPlayUtils.init(this);
+        initView();
     }
 
-    RxDialogSure sure;
 
     private void initView() {
-        id = getIntent().getIntExtra("id", 0);
         //初始化状态view
         loadView = loadView(recyclerView);
         errorView = errorView(recyclerView);
@@ -98,11 +97,7 @@ public class MyReviewDetailsActivity extends BaseActivity {
         if (sure != null) {
             sure.dismiss();
         }
-        if (message == null) {
-            SoundPlayUtils.play(8);
-            return;
-        }
-        if (message.length() < Constants.WAREHOUSE_LENGTH) {
+        if (message == null || message.length() < Constants.WAREHOUSE_LENGTH) {
             RxToast.warning("扫描正确的条码", 4000);
             SoundPlayUtils.play(5);
             return;
@@ -120,10 +115,8 @@ public class MyReviewDetailsActivity extends BaseActivity {
                         checkList.add(info.getBar_code());
                     }
                 }
-
             }
         }
-
         if (!list.contains(message)) {
             SoundPlayUtils.play(5);
             sure = new RxDialogSure(this);
@@ -136,7 +129,6 @@ public class MyReviewDetailsActivity extends BaseActivity {
             });
             sure.show();
         }
-
         if (checkList.size() == adapter.getData().size()) {
             check(mailNo);
         }
@@ -192,8 +184,11 @@ public class MyReviewDetailsActivity extends BaseActivity {
                 .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(baseBean -> {
                     SoundPlayUtils.play(7);
-                    int size = RxSPTool.getInt(MyReviewDetailsActivity.this, String.valueOf(id));
-                    RxSPTool.putInt(MyReviewDetailsActivity.this, String.valueOf(id), size + 1);
+                    int size = RxSPTool.getInt(MyReviewDetailsActivity.this, id);
+                    if (size == -1) {
+                        size = 0;
+                    }
+                    RxSPTool.putInt(MyReviewDetailsActivity.this, id, size + 1);
                     finish();
                 }, throwable -> {
                 });

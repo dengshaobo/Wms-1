@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hzx.wms.R;
-import com.hzx.wms.bean.StockBean;
+import com.hzx.wms.bean.QueryBean;
 
 import java.util.List;
 
@@ -17,13 +17,13 @@ import java.util.List;
  * @describe TODO
  */
 
-public class QueryAdapter extends BaseQuickAdapter<StockBean, BaseViewHolder> {
-    public QueryAdapter(int layoutResId, @Nullable List<StockBean> data) {
+public class QueryAdapter extends BaseQuickAdapter<QueryBean, BaseViewHolder> {
+    public QueryAdapter(int layoutResId, @Nullable List<QueryBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, StockBean item) {
+    protected void convert(BaseViewHolder helper, QueryBean item) {
         helper.setText(R.id.text_business, "商家：" + item.getBusiness().getName());
         helper.setText(R.id.text_name, "品名：" + item.getName());
         helper.setText(R.id.text_barcode, "条码：" + item.getBar_code());

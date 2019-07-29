@@ -56,9 +56,6 @@ public class ReviewActivity extends BaseActivity {
     private View loadView;
     private View errorView;
     private View emptyView;
-    private int mNextRequestPage = 1;
-    private static final int LIMIT = 10;
-    private static final String NUM = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -16,16 +16,24 @@ import com.hzx.wms.app.Constants;
 import com.hzx.wms.app.MyApplication;
 import com.hzx.wms.bean.RepeatBean;
 import com.hzx.wms.greendao.DaoSession;
+import com.hzx.wms.http.Api;
+import com.hzx.wms.http.HttpUtils;
+import com.hzx.wms.http.RxUtils;
 import com.hzx.wms.utils.EditSearchAction;
 import com.hzx.wms.utils.SoundPlayUtils;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.vondear.rxtool.view.RxToast;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author qinl
@@ -53,6 +61,8 @@ public class RepeatActivity extends BaseActivity {
     TextView textPost;
     @Bind(R.id.edit_num)
     EditText editNum;
+    @Bind(R.id.text_status)
+    TextView textStatus;
     private DaoSession daoSession;
 
     @Override
@@ -79,6 +89,7 @@ public class RepeatActivity extends BaseActivity {
         }
         if (message.length() < Constants.WAREHOUSE_LENGTH) {
             RxToast.warning("请扫描或输入正确的条码");
+            SoundPlayUtils.play(5);
             return;
         }
         textBarcode.setText(String.format("物流单号：%s", message));
@@ -87,8 +98,48 @@ public class RepeatActivity extends BaseActivity {
             SoundPlayUtils.play(4);
             return;
         }
-        daoSession.insert(new RepeatBean(message));
-        textScanNum.setText(String.format(Locale.CHINA, "扫描次数：%d", daoSession.loadAll(RepeatBean.class).size()));
+
+        getIntercept(message);
+    }
+
+
+    private void getIntercept(String barcode) {
+        HashMap<String, String> params = new HashMap<>(3);
+        params.put("logistics_no", barcode);
+        params.put("page", "1");
+        params.put("limit", "1");
+        HttpUtils.getInstance().createService(Api.class)
+                .getIntercept(params)
+                .retry(1)
+                .compose(RxUtils.handleGlobalError(this))
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(disposable -> loading.show())
+                .doFinally(() -> loading.cancel())
+                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
+                .subscribe(listBaseBean -> {
+                    String msg = "无状态";
+                    int status = 0;
+                    if (listBaseBean.getData().size() != 0) {
+                        if(listBaseBean.getData().get(0).getNow_status()!=null){
+                            msg = listBaseBean.getData().get(0).getNow_status().getDeclare_status_msg();
+                            status = listBaseBean.getData().get(0).getNow_status().getDeclare_status_id();
+                        }
+                    }
+                    textStatus.setText(String.format("拦截状态：%s", msg));
+                    if (checkbox.isChecked()) {
+                        if (status == 800) {
+                            SoundPlayUtils.play(1);
+                            daoSession.insert(new RepeatBean(barcode));
+                        }
+                    } else {
+                        daoSession.insert(new RepeatBean(barcode));
+                    }
+                    textScanNum.setText(String.format(Locale.CHINA, "扫描次数：%d", daoSession.loadAll(RepeatBean.class).size()));
+                }, throwable -> {
+
+                });
     }
 
 

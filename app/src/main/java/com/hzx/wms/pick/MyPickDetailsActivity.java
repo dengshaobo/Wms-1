@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -95,7 +96,7 @@ public class MyPickDetailsActivity extends BaseActivity {
 
     private void showNumDialog(TaskListBean.NumListBean list, int position) {
         dialogEditSureCancel = new RxDialogEditSureCancel(this);
-        dialogEditSureCancel.getTitleView().setText(String.format("输入%s已捡数量", list.getBar_code()));
+        dialogEditSureCancel.getTitleView().setText(String.format(Locale.CHINA, "输入%s已捡数量(应捡:%d)", list.getName(), list.getNum()));
         dialogEditSureCancel.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
         dialogEditSureCancel.getSureView().setOnClickListener(v -> {
             String num = dialogEditSureCancel.getEditText().getText().toString();
@@ -104,7 +105,14 @@ public class MyPickDetailsActivity extends BaseActivity {
                 return;
             }
             list.setPick_num(Integer.parseInt(num));
-            adapter.notifyItemChanged(position);
+            if (list.getNum() == Integer.parseInt(num)) {
+                adapter.remove(position);
+            } else {
+                adapter.notifyItemChanged(position);
+            }
+            if (adapter.getData().size() == 0) {
+                post();
+            }
             dialogEditSureCancel.cancel();
         });
         dialogEditSureCancel.getCancelView().setOnClickListener(v -> dialogEditSureCancel.cancel());

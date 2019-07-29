@@ -1,8 +1,8 @@
 apply plugin: 'tinkerpatch-support'
 
 def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-1.0.0-0718-10-15-26"
-def variantName = "debug"
+def baseInfo = "app-1.4.0-0729-10-21-02"
+def variantName = "mybuildtype"
 
 tinkerpatchSupport {
     /** 可以在debug的时候关闭 tinkerPatch **/
@@ -15,27 +15,32 @@ tinkerpatchSupport {
     protectedApp = false
 
     /** 补丁是否支持新增 Activity (exported必须为false)**/
-    supportComponent = false
+    supportComponent = true
 
     autoBackupApkPath = "${bakPath}"
 
     /** 在tinkerpatch.com得到的appKey **/
-    appKey = "da3816e973b430b3"
+    appKey = "01cd71958a7a1f46"
     /** 注意: 若发布新的全量包, appVersion一定要更新 **/
-    appVersion = "1.0.0"
+    appVersion = "1.4.0"
 
     def pathPrefix = "${bakPath}/${baseInfo}/${variantName}/"
-    //def name = "app-debug"
+    def name = "${project.name}-${variantName}"
 
-    baseApkFile = "${pathPrefix}/app-debug.apk"
-    baseProguardMappingFile = "${pathPrefix}/app-debug-mapping.txt"
-    baseResourceRFile = "${pathPrefix}/app-debug-R.txt"
+    baseApkFile = "${pathPrefix}/${name}.apk"
+    baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
+    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
 
 
 }
 
+android {
+    defaultConfig {
+        buildConfigField "boolean", "TINKER_ENABLE", "${tinkerpatchSupport.tinkerEnable}"
+    }
+}
+
 tinkerPatch {
-    //oldApk ="${bakPath}/${appName}/app-release.apk"
     ignoreWarning = false
     useSign = true
     dex {
@@ -57,12 +62,8 @@ tinkerPatch {
     }
     sevenZip {
         zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
-//        path = "/usr/local/bin/7za"
     }
     buildConfig {
         keepDexApply = false
-        //tinkerId = "1.0.1-base"
-        //applyMapping = "${bakPath}/${appName}/app-release-mapping.txt" //  可选，设置mapping文件，建议保持旧apk的proguard混淆方式
-        //applyResourceMapping = "${bakPath}/${appName}/app-release-R.txt" // 可选，设置R.txt文件，通过旧apk文件保持ResId的分配
     }
 }

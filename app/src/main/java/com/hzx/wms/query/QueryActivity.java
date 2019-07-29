@@ -64,7 +64,7 @@ public class QueryActivity extends BaseActivity {
         errorView.setOnClickListener(v -> getData(edtWarehouseWarehouseNum.getText().toString()));
         LinearLayoutManager manager = new LinearLayoutManager(QueryActivity.this);
         recyclerView.setLayoutManager(manager);
-        adapter = new QueryAdapter(R.layout.activity_stock_item, null);
+        adapter = new QueryAdapter(R.layout.activity_query_item, null);
         // recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(adapter);
 

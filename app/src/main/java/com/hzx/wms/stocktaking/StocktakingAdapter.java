@@ -1,4 +1,4 @@
-package com.hzx.wms.check;
+package com.hzx.wms.stocktaking;
 
 import android.support.annotation.Nullable;
 
@@ -14,12 +14,12 @@ import java.util.List;
  * @author qinl
  * @package com.hzx.wms.check
  * @date 2019/7/16 11:07
- * @fileName CheckAdapter
+ * @fileName StocktakingAdapter
  * @describe TODO
  */
 
-public class CheckAdapter extends BaseQuickAdapter<CheckBean, BaseViewHolder> {
-    public CheckAdapter(int layoutResId, @Nullable List<CheckBean> data) {
+public class StocktakingAdapter extends BaseQuickAdapter<CheckBean, BaseViewHolder> {
+    public StocktakingAdapter(int layoutResId, @Nullable List<CheckBean> data) {
         super(layoutResId, data);
     }
 

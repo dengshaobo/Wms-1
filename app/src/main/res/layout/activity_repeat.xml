@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.hzx.wms.repeat.RepeatActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -102,6 +104,19 @@
             android:layout_height="@dimen/dp_50"
             android:gravity="center"
             android:text="拦截数量：0" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/text_status"
+            style="@style/itemText"
+            android:layout_height="@dimen/dp_50"
+            android:gravity="center"
+            android:text="拦截状态：0" />
+
 
         <View
             android:layout_width="match_parent"

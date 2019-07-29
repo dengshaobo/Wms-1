@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="设置"
+            android:text="@string/setting"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/sp_16"
             android:textStyle="bold" />
@@ -27,7 +27,7 @@
             android:id="@+id/img_back"
             android:layout_width="@dimen/dp_40"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:padding="@dimen/dp_5"
             android:src="@drawable/img_back" />
     </android.support.v7.widget.Toolbar>
@@ -38,8 +38,9 @@
         android:layout_height="@dimen/dp_50"
         android:background="@drawable/touch_bg"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/dp_10"
-        android:text="更新" />
+        android:paddingStart="@dimen/dp_10"
+        android:paddingEnd="@dimen/dp_10"
+        android:text="@string/update" />
 
     <View
         android:layout_width="match_parent"
@@ -47,22 +48,6 @@
         android:background="@color/colorBlack"
         app:layout_constraintTop_toBottomOf="@+id/text_update" />
 
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/text_url"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        android:background="@drawable/selector_bg"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/dp_10"
-        android:text="服务器地址:" />
-
-    <View
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/colorBlack"
-        app:layout_constraintTop_toBottomOf="@+id/text_update" />
 
     <TextView
         android:id="@+id/text_login_out"
@@ -70,7 +55,22 @@
         android:layout_height="@dimen/dp_50"
         android:background="@drawable/touch_bg"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/dp_10"
-        android:text="退出登录" />
+        android:paddingStart="@dimen/dp_10"
+        android:paddingEnd="@dimen/dp_10"
+        android:text="@string/login_out" />
+
+
+    <TextView
+        android:id="@+id/text_tinker_version"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:background="@drawable/touch_bg"
+        android:gravity="bottom|center"
+        android:paddingEnd="@dimen/dp_10"
+        android:paddingStart="@dimen/dp_10"
+        android:text="@string/tinker_id" />
+
 
 </LinearLayout>
